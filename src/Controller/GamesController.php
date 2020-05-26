@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Games;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +13,25 @@ class GamesController extends AbstractController
      */
     public function index()
     {
+
+        $games = $this->getDoctrine()
+            ->getRepository(Games::class)
+            ->findAll()
+            ->where('id between 1 and 10');
+
+        if ($games == null) {
+            throw $this->createNotFoundException(
+                'Error connecting to database'
+            );
+        }
+
+        // or render a template
+        // in the template, print things with {{ product.name }}
+        // return $this->render('product/show.html.twig', ['product' => $product]);
+
+
         return $this->render('games/index.html.twig', [
-            'controller_name' => 'GamesController',
+            'controller_name' => 'GamesController', 'game_name' => $games->getTitle()
         ]);
     }
 }
