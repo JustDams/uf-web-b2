@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GamesController extends AbstractController
 {
     /**
-     * @Route("/games", name="games")
+     * @Route("/", name="index")
      */
     public function index()
     {
