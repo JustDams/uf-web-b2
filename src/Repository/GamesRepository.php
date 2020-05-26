@@ -32,6 +32,15 @@ class GamesRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findGames()
+    {
+        return $this->createQueryBuilder('a')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Games[] Returns an array of Games objects
     //  */

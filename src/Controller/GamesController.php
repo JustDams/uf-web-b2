@@ -11,7 +11,7 @@ class GamesController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index($page = 1)
     {
 
         $games = $this->getDoctrine()
@@ -24,13 +24,8 @@ class GamesController extends AbstractController
             );
         }
 
-        // or render a template
-        // in the template, print things with {{ product.name }}
-        // return $this->render('product/show.html.twig', ['product' => $product]);
-
-
         return $this->render('games/index.html.twig', [
-            'controller_name' => 'GamesController', 'games' => $games
+            'games' => $games
         ]);
     }
 }
