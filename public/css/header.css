@@ -5,3 +5,8 @@
 .icon {
     margin: 10px 20px;
 }
+
+.card-image {
+    width: 17rem;
+    margin-left: -1rem;
+}
