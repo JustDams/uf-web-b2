@@ -9,10 +9,8 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-    {{ game_name }}
-=======
-    {% for  in  %}
-        
+
+    {% for game in games  %}
+        {{ game.title }}
     {% endfor %}
->>>>>>> 8f6306904b05a288ae495156ae409618c2a0c3ae
 {% endblock %}

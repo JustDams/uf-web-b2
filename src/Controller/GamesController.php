@@ -16,8 +16,7 @@ class GamesController extends AbstractController
 
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
-            ->findAll()
-            ->where('id between 1 and 10');
+            ->find10First();
 
         if ($games == null) {
             throw $this->createNotFoundException(
@@ -31,7 +30,7 @@ class GamesController extends AbstractController
 
 
         return $this->render('games/index.html.twig', [
-            'controller_name' => 'GamesController', 'game_name' => $games->getTitle()
+            'controller_name' => 'GamesController', 'games' => $games
         ]);
     }
 }

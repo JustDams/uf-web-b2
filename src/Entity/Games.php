@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="games")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\GamesRepository")
  */
 class Games
 {
