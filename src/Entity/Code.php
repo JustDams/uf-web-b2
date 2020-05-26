@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Code
  *
- * @ORM\Table(name="code", indexes={@ORM\Index(name="Code_User0_FK", columns={"id_user"})})
+ * @ORM\Table(name="code", indexes={@ORM\Index(name="code_games_id_game_fk", columns={"id_game"}), @ORM\Index(name="Code_User0_FK", columns={"id_user"})})
  * @ORM\Entity
  */
 class Code
@@ -55,6 +55,16 @@ class Code
      * @ORM\Column(name="url_invoice", type="string", length=20, nullable=false)
      */
     private $urlInvoice;
+
+    /**
+     * @var \Games
+     *
+     * @ORM\ManyToOne(targetEntity="Games")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_game", referencedColumnName="id_game")
+     * })
+     */
+    private $idGame;
 
     /**
      * @var \Users

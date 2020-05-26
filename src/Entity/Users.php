@@ -73,5 +73,19 @@ class Users
      */
     private $idRole;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Games", mappedBy="idUser")
+     */
+    private $idGame;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idGame = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 }
