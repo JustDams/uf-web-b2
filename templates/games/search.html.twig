@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Recherche d'un jeu contenant "{{research}}"
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		{% if games | length != 0 %}
+
+			{# Games #}
+			<div class="row">
+				{% for g in games %}
+					<div class="col-sm-3 mb-5">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">{{g.title}}</h5>
+								<h6 class="card-subtitle mb-2 text-muted">{{g.publishers == null ? "Unknown" : g.publishers}}
+									-
+									{{g.releaseYear}}</h6>
+								<img class="card-img game-image" id="dynamicImg{{ g.idGame }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'"/>
+								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+								{% set genres = g.genres | split(',') %}
+								{% for genre in genres  %}
+									<div class="badge badge-primary text-wrap" style="width: fit-content;">
+										{{ genre }}
+									</div>
+								{% endfor %}
+							</div>
+							<a href="#" class="btn btn-secondary btn-buy">Acheter le jeu</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div id="notfound">
+					<div class="notfound">
+						<div class="notfound-404">
+							<h1>404</h1>
+						</div>
+						<h2>Oops, Il s'emblerait que le jeu que vous cherchez n'est pas identifiable!</h2>
+						<a href="{{path('index')}}">
+							<span class="arrow"></span>Accueil</a>
+					</div>
+				</div>
+
+			{% endif %}
+		</div>
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{asset('/js/scripts.js')}}"></script>
+		<script>
+			{% for g in games %}
+loadImage("{{ g.title }}","{{ g.idGame }}");{% endfor %}
+		</script>
+	{% endblock %}

@@ -29,9 +29,38 @@ class GamesController extends AbstractController
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
         return $this->render('games/index.html.twig', [
             'games' => $games,
             'page' => $page,
+            'searchform' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/search/{game}", name="search")
+     */
+    public function search(Request $request, $game)
+    {
+        $games = $this->getDoctrine()
+            ->getRepository(Games::class)
+            ->search($game);
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('games/search.html.twig', [
+            'games' => $games,
+            'research' => $game,
             'searchform' => $form->createView(),
         ]);
     }
