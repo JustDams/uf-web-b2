@@ -18,13 +18,6 @@
 							<h5 class="card-title">{{g.title}}</h5>
 							<h6 class="card-subtitle mb-2 text-muted">{{g.publishers}}</h6>
 							<div>
-								<script>
-									fetch('https://api.rawg.io/api/games?search="{{ g.title }}"')
-											.then(res => res.json())
-											.then((out) => {
-												return document.getElementById('dynamicImg{{ g.idGame }}').src = (out.results[0].background_image);
-											}).catch(err => console.error(err))
-								</script>
 								<img class="card-image" id="dynamicImg{{ g.idGame }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'" />
 							</div>
 							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
@@ -41,4 +34,12 @@
 			{% endfor %}
 		</div>
 	</div>
+{% endblock %}
+{% block javascripts %}
+<script src="{{asset('/js/scripts.js')}}"></script>
+<script>
+    {% for g in games %}
+        loadImage("{{g.title}}","{{g.idGame}}");
+    {% endfor %}
+</script>
 {% endblock %}
