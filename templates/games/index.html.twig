@@ -22,7 +22,6 @@
 									fetch('https://api.rawg.io/api/games?search="{{ g.title }}"')
 											.then(res => res.json())
 											.then((out) => {
-												console.log(out.results[0].background_image)
 												return document.getElementById('dynamicImg{{ g.idGame }}').src = (out.results[0].background_image);
 											}).catch(err => console.error(err))
 								</script>
