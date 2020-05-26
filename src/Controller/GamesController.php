@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Games;
+use App\Repository\GamesRepository\GamesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
