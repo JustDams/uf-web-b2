@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
+<<<<<<< HEAD
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+=======
+{% block title %}
+	Accueil
+{% endblock %}
+>>>>>>> dcb50b040a0ee4f2c3ca817035ec910f645decb8
 
+{% block stylesheets %}
+	<link href="{{asset('/css/games.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
 
+<<<<<<< HEAD
     {% for game in games  %}
         <div>
             {{ game.title }}
@@ -12,4 +22,29 @@
         </div>
     {% endfor %}
 
+=======
+{% block body %}
+	<div class="container">
+		<div class="row">
+			{% for g in games %}
+				<div class="col-sm-4 mb-4">
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">{{g.title}}</h5>
+							<h6 class="card-subtitle mb-2 text-muted">{{g.publishers}}</h6>
+							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+							{% set genres = g.genres | split(',') %}
+							{% for genre in genres  %}
+								<div class="badge badge-primary text-wrap" style="width: fit-content;">
+									{{ genre }}
+								</div>
+							{% endfor %}
+						</div>
+						<a href="#" class="btn btn-secondary btn-buy">Acheter le jeu</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+>>>>>>> dcb50b040a0ee4f2c3ca817035ec910f645decb8
 {% endblock %}
