@@ -9,14 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class GamesController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/{page}", name="index")
      */
     public function index($page = 1)
     {
 
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
-            ->find10First();
+            ->findGames($page);
 
         if ($games == null) {
             throw $this->createNotFoundException(

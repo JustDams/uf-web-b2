@@ -20,25 +20,33 @@ class GamesRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return Games[] Returns an array of 10 first Games
-    */
+     * @return Games[] Returns an array of 10 first Games
+     */
 
     public function find10First()
     {
         return $this->createQueryBuilder('a')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-    public function findGames()
+    public function findGames($page)
     {
-        return $this->createQueryBuilder('a')
-            ->setMaxResults(10)
+        $first = 1;
+        $second = 20;
+
+        if ($page > 1) {
+            $first += (20 * ($page - 1));
+            $second += (20 * ($page - 1));
+        }
+        return $this->createQueryBuilder('g')
+            ->where('g.idGame >= ?1')
+            ->andWhere('g.idGame <= ?2')
+            ->setParameter(1, $first)
+            ->setParameter(2, $second)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     // /**
