@@ -1,28 +1,13 @@
 {% extends 'base.html.twig' %}
 
-<<<<<<< HEAD
-{% block title %}Accueil{% endblock %}
-
-{% block body %}
-=======
 {% block title %}
 	Accueil
 {% endblock %}
->>>>>>> dcb50b040a0ee4f2c3ca817035ec910f645decb8
 
 {% block stylesheets %}
 	<link href="{{asset('/css/games.css')}}" type="text/css" rel="stylesheet">
 {% endblock %}
 
-<<<<<<< HEAD
-    {% for game in games  %}
-        <div>
-            {{ game.title }}
-            <p>{{ game.usedPrice }}</p>
-        </div>
-    {% endfor %}
-
-=======
 {% block body %}
 	<div class="container">
 		<div class="row">
@@ -46,5 +31,4 @@
 			{% endfor %}
 		</div>
 	</div>
->>>>>>> dcb50b040a0ee4f2c3ca817035ec910f645decb8
 {% endblock %}
