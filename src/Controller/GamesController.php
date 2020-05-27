@@ -20,10 +20,12 @@ class GamesController extends AbstractController
             ->getRepository(Games::class)
             ->findGames($page);
 
-        if ($games == null) {
-            throw $this->createNotFoundException(
-                'Error connecting to database'
-            );
+        $pagesLen = [];
+        for ($i = $page + 1; $i < $page + 3; $i++) {
+            $pageLen = $this->getDoctrine()
+                ->getRepository(Games::class)
+                ->findGames($i);
+            array_push($pagesLen, count($pageLen));
         }
 
         $form = $this->createForm(SearchFormType::class);
@@ -36,6 +38,7 @@ class GamesController extends AbstractController
 
         return $this->render('games/index.html.twig', [
             'games' => $games,
+            'pagesLen' => $pagesLen,
             'page' => $page,
             'searchform' => $form->createView(),
         ]);
