@@ -1,0 +1,11 @@
+.form-container {
+    height: 100vh;
+}
+
+.form-container div label {
+    color: white;
+}
+
+.main-content-container {
+    padding: 0!important;
+}

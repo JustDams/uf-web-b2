@@ -28,6 +28,9 @@ class GamesController extends AbstractController
     public function index(Request $request, $page = 1)
     {
         $user = $this->getUser();
+        if ($page < 1) {
+            return $this->redirectToRoute('index', ['page' => 1]);
+        }
 
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
@@ -56,7 +59,6 @@ class GamesController extends AbstractController
             'page' => $page,
             'searchform' => $form->createView(),
         ]);
-
     }
 
     /**
