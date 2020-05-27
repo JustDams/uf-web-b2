@@ -33,6 +33,7 @@ class UsersFormType extends AbstractType
             //->add('idGame')
             ->add('register', SubmitType::class);
     }
+    
 
     public function configureOptions(OptionsResolver $resolver)
     {
