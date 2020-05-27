@@ -5,19 +5,24 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Users
  *
  * @ORM\Table(name="users", indexes={@ORM\Index(name="User_Role_FK", columns={"id_role"})})
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"email"}
+ * )
  */
-class Users
+class Users implements UserInterface
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\Column(name="id_user", type="integer", nullable=false, unique=true)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -40,7 +45,7 @@ class Users
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=200, nullable=false)
+     * @ORM\Column(name="email", type="string", length=200, nullable=false, unique=true)
      */
     private $email;
 
@@ -224,5 +229,27 @@ class Users
         }
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return [
+            'ROLE_USER'
+        ];
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

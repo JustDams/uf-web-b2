@@ -10,20 +10,22 @@ use Symfony\Component\HttpFoundation\Request;
 use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UsersController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
      */
-    public function index(Request $request)
+    public function index(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = new Users();
 
         $role = new Roles();
-        $role -> setName("Admin");
+        $role -> setName("admin");
         $entityManager->persist($role);
 
         $user -> setBalance(0);
@@ -34,8 +36,13 @@ class UsersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $hash = $encoder-> encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+
             $entityManager->persist($user);
             $entityManager->flush();
+
+            return $this->redirectToRoute('login');
         }
 
         $searchForm = $this->createForm(SearchFormType::class);
@@ -55,27 +62,10 @@ class UsersController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function login(Request $request)
+    public function login(Request $request, AuthenticationUtils $utils)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $user = new Users();
-
-        $role = new Roles();
-        $role -> setName("Admin");
-        $entityManager->persist($role);
-
-        $user -> setBalance(0);
-        $user -> setIdRole($role);
-        $user -> setRegisterDate(new \DateTime('now'));
-        $form = $this->createForm(UsersFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-        }
+        $error = $utils->getLastAuthenticationError();
+        $lastUsername = $utils->getLastUsername();
 
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($request);
@@ -85,9 +75,18 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        return $this->render('users/index.html.twig', [
+        return $this->render('users/login.html.twig', [
             'searchform' => $searchForm->createView(),
-            'userForm' => $form->createView(),
+            'error' => $error, 'last_username' => $lastUsername
         ]);
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
+
+    }
+
 }
