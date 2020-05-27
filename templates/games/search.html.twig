@@ -4,6 +4,10 @@
 	Recherche d'un jeu contenant "{{research}}"
 {% endblock %}
 
+{% block stylesheets %}
+	<link href="{{asset('/css/games.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 	<div class="container">
 		{% if games | length != 0 and research != null %}
