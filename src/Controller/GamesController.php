@@ -8,6 +8,7 @@ use App\Repository\GamesRepository\GamesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class GamesController extends AbstractController
 {
@@ -26,6 +27,8 @@ class GamesController extends AbstractController
      */
     public function index(Request $request, $page = 1)
     {
+        $user = $this->getUser();
+
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
             ->findGames($page);
@@ -47,6 +50,7 @@ class GamesController extends AbstractController
         }
 
         return $this->render('games/index.html.twig', [
+            'user' => $user,
             'games' => $games,
             'pagesLen' => $pagesLen,
             'page' => $page,
