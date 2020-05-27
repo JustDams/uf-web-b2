@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Users;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,10 +23,9 @@ class UsersFormType extends AbstractType
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
             ->add('birthday', BirthdayType::class)
-            ->add('password',  RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm Password']
+            ->add('password', RepeatedType::class, [
+                'first_options'  => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat Password'],
             ])
             //->add('balance')
             //->add('registerDate', DateType::class)
