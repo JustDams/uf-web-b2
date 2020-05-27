@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Roles;
 use App\Entity\Users;
 use App\Form\SearchFormType;
 use App\Form\UsersFormType;
@@ -17,12 +18,61 @@ class UsersController extends AbstractController
      */
     public function index(Request $request)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+
         $user = new Users();
+
+        $role = new Roles();
+        $role -> setName("Admin");
+        $entityManager->persist($role);
+
+        $user -> setBalance(0);
+        $user -> setIdRole($role);
+        $user -> setRegisterDate(new \DateTime('now'));
         $form = $this->createForm(UsersFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        $searchForm = $this->createForm(SearchFormType::class);
+        $searchForm->handleRequest($request);
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $data = $searchForm->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('users/index.html.twig', [
+            'searchform' => $searchForm->createView(),
+            'userForm' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/login", name="login")
+     */
+    public function login(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = new Users();
+
+        $role = new Roles();
+        $role -> setName("Admin");
+        $entityManager->persist($role);
+
+        $user -> setBalance(0);
+        $user -> setIdRole($role);
+        $user -> setRegisterDate(new \DateTime('now'));
+        $form = $this->createForm(UsersFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($user);
             $entityManager->flush();
         }
