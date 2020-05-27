@@ -96,18 +96,11 @@ class Games
         $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    // Getters & Setters
-
-    /**
-     * @return string|null
-     */
-    public function getIdGame() {
+    public function getIdGame(): ?int
+    {
         return $this->idGame;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;

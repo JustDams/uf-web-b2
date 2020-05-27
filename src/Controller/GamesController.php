@@ -39,6 +39,7 @@ class GamesController extends AbstractController
             'page' => $page,
             'searchform' => $form->createView(),
         ]);
+
     }
 
     /**

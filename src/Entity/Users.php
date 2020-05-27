@@ -66,6 +66,13 @@ class Users
     private $registerDate;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="text", length=65535, nullable=false)
+     */
+    private $password;
+
+    /**
      * @var \Roles
      *
      * @ORM\ManyToOne(targetEntity="Roles")
@@ -163,6 +170,18 @@ class Users
     public function setRegisterDate(\DateTimeInterface $registerDate): self
     {
         $this->registerDate = $registerDate;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
