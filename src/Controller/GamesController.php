@@ -12,7 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class GamesController extends AbstractController
 {
     /**
-     * @Route("/{page}", name="index")
+     * @Route("/", name="redirectIndex")
+     */
+    public function redirectIndex()
+    {
+        return $this->redirectToRoute('index', [
+            'page' => 1
+        ]);
+    }
+
+    /**
+     * @Route("/index/{page}", name="index")
      */
     public function index(Request $request, $page = 1)
     {
@@ -48,7 +58,7 @@ class GamesController extends AbstractController
     /**
      * @Route("/search/{game}", name="search")
      */
-    public function search(Request $request, $game)
+    public function search(Request $request, $game = null)
     {
         $games = $this->getDoctrine()
             ->getRepository(Games::class)

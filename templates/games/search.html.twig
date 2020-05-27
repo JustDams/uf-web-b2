@@ -6,8 +6,7 @@
 
 {% block body %}
 	<div class="container">
-		{% if games | length != 0 %}
-
+		{% if games | length != 0 and research != null %}
 			{# Games #}
 			<div class="row">
 				{% for g in games %}
