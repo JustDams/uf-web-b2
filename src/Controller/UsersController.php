@@ -25,7 +25,7 @@ class UsersController extends AbstractController
         $user = new Users();
 
         $role = new Roles();
-        $role -> setName("admin");
+        $role -> setName("user");
         $entityManager->persist($role);
 
         $user -> setBalance(0);
