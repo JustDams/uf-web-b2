@@ -67,10 +67,9 @@
 				<script src="https://kit.fontawesome.com/519ed7ba0b.js" crossorigin="anonymous"></script>
 				{% block javascripts %}{% endblock %}
 			<footer>
-				{% if user is defined %}
+				{% if user is defined and user is not null %}
 					{{ user.email }}
 				{% endif %}
 			</footer>
 			</body>
-
 </html>
