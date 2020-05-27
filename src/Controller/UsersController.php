@@ -18,26 +18,25 @@ class UsersController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $encoder)
+    public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $entityManager = $this->getDoctrine()->getManager();
-
         $user = new Users();
 
         $role = new Roles();
-        $role -> setName("user");
+        $role->setName("user");
         $entityManager->persist($role);
 
-        $user -> setBalance(0);
-        $user -> setIdRole($role);
-        $user -> setRegisterDate(new \DateTime('now'));
         $form = $this->createForm(UsersFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $hash = $encoder-> encodePassword($user, $user->getPassword());
+            $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
+            
+            $user->setBalance(0);
+            $user->setIdRole($role);
+            $user->setRegisterDate(new \DateTime('now'));
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -86,7 +85,5 @@ class UsersController extends AbstractController
      */
     public function logout()
     {
-        
     }
-
 }
