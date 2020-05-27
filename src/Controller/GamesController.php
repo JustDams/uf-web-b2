@@ -28,11 +28,7 @@ class GamesController extends AbstractController
     public function index(Request $request, $page = 1)
     {
         $user = $this->getUser();
-<<<<<<< HEAD
         
-=======
-
->>>>>>> 98a943bb731d0d27057ebb5d7accf3210c59c56e
         if ($page < 1) {
             return $this->redirectToRoute('index', ['page' => 1]);
         }
