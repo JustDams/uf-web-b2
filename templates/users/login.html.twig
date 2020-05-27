@@ -3,19 +3,21 @@
 {% block title %}
 	Login
 {% endblock %}
-
+{% block stylesheets %}
+	<link href="{{asset('/css/form.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
 {% block body %}
-	<h1>Login</h1>
-	<div class="container">
-
+	<div class="d-flex justify-content-center form-container align-items-center flex-column">
+		<div class="border shadow p-3 rounded navbar-bg">
+			<h1 style="color: white;">Login</h1>
+			<form action="{{ path("login") }}" method="POST">
+				<input type="text" name="_username" class="form-control my-4" placeholder="Email">
+				<input type="password" class="form-control mb-4" placeholder="Password" name="_password">
+				<button type="submit" class="btn btn-light w-100">Login</button>
+			</form>
+		</div>
 		{% if error %}
-			<span class="error">{{ error.messageKey }}</span>
+			<span class="alert alert-danger mt-4">{{ error.messageKey }}</span>
 		{% endif %}
-
-		<form action="{{ path("login") }}" method="POST">
-			<input type="text" name="_username" value="{{ last_username }}" placeholder="Type Username">
-			<input type="password" name="_password">
-			<button type="submit">Login</button>
-		</form>
 	</div>
 {% endblock %}
