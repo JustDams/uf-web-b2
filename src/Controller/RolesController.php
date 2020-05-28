@@ -26,18 +26,17 @@ class RolesController extends AbstractController
         }
 
         if ($user != null) {
-            $role = $this->getDoctrine()->getRepository(Roles::class)->find($user->getIdRole());
-            // if ($role != 3) {
-            //     return $this->redirectToRoute('index');
-            // } else {
-
+            $role= $user->getRoles();
+            if ($role != 'ROLE_USER') {
                 return $this->render('roles/index.html.twig', [
                     'role' => $role,
-                    'searchform' => $form->createView(),
                 ]);
-            //}
+            }
+            else {
+                return $role;
+            }
         } else {
-            return $this->redirectToRoute('index');
+            return $user;
         }
     }
 }

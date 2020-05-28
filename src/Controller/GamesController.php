@@ -29,7 +29,12 @@ class GamesController extends AbstractController
     public function index(Request $request, $page = 1)
     {
         $user = $this->getUser();
+<<<<<<< HEAD
 
+=======
+        $user_role = $user->getIdRole();
+        
+>>>>>>> 62f6feb3ce86fec1a062c86ccc67b891077314c4
         if ($page < 1) {
             return $this->redirectToRoute('index', ['page' => 1]);
         }
@@ -55,6 +60,7 @@ class GamesController extends AbstractController
         }
 
         return $this->render('games/index.html.twig', [
+            'user_role' => $user_role,
             'user' => $user,
             'games' => $games,
             'pagesLen' => $pagesLen,
