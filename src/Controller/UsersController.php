@@ -23,9 +23,6 @@ class UsersController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = new Users();
-        $role = new Roles();
-        $role->setRole(0);
-        $user->setIdRole($role);
 
         $form = $this->createForm(UsersFormType::class, $user);
         $form->handleRequest($request);

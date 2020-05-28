@@ -61,11 +61,6 @@ class Users implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToOne(targetEntity=Roles::class, inversedBy="users", cascade={"persist", "remove"})
-     */
-    private $idRole;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="idUser", orphanRemoval=true)
      */
     private $comments;
@@ -160,18 +155,6 @@ class Users implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getIdRole(): ?Roles
-    {
-        return $this->idRole;
-    }
-
-    public function setIdRole(?Roles $idRole): self
-    {
-        $this->idRole = $idRole;
 
         return $this;
     }
