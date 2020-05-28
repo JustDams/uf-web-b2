@@ -11,7 +11,7 @@
 
 {% block body %}
 	<div class="container">
-		<div class="card game-container-show col-12 p-0">
+		<div class="card game-container-show col-12 p-0 shadow">
 			<img src="" id="dynamicImg{{ game.id }}" class="rounded col-lg-4 p-0 card-img-top game-container-image">
 			<div class="card-body">
 				<h3 class="underline">
@@ -49,7 +49,7 @@
 				<button class="btn btn-secondary position-absolute" style="bottom: 10px; right: 10px;">Buy</button>
 			</div>
 		</div>
-		<div class="card my-4">
+		<div class="card my-4 shadow">
 			<h5 class="card-header">Leave a Comment:</h5>
 			<div class="card-body">
 				{% if canComment %}
@@ -115,6 +115,17 @@
 					</p>
 				{% endif %}
 			</div>
+		</div>
+		<div class="card my-4 shadow">
+			<ul class="list-group list-group-flush">
+				{% for c in comments %}
+					<div>
+						<div></div>
+						<div>{{c.content}}</div>
+						<div>Note: {{c.note}}</div>
+					</div>
+				{% endfor %}
+			</ul>
 		</div>
 	</div>
 {% endblock %}

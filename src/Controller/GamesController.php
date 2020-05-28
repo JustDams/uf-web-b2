@@ -99,6 +99,7 @@ class GamesController extends AbstractController
         }
 
         $user = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
 
         if ($user != null) {
             $userId = $user->getId();
@@ -110,7 +111,9 @@ class GamesController extends AbstractController
         }
 
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
-
+        $comments = $this->getDoctrine()->getRepository(Comments::class)->findBy([
+            'idGame' => $id
+        ]);
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
@@ -122,16 +125,23 @@ class GamesController extends AbstractController
 
         $commentForm = $this->createForm(CommentsFormType::class);
         $commentForm->handleRequest($request);
+        $comment = new Comments();
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $comment = new Comments();
-
+            $comment->setIdGame($this->getDoctrine()->getRepository(Games::class)->find($id));
+            $comment->setTitle($commentForm->getData()->getTitle());
+            $comment->setContent($commentForm->getData()->getContent());
+            $comment->setNote($commentForm->getData()->getNote());
+            $comment->setIdUser($user);
+            $entityManager->persist($comment);
+            $entityManager->flush();
             return $this->redirectToRoute('game', ['id' => $id]);
         }
 
         return $this->render('games/game.html.twig', [
             'game' => $game,
             'user' => $user,
+            'comments' => $comments,
             'canComment' => $canComment,
             'searchform' => $form->createView(),
             'commentForm' => $commentForm->createView(),
