@@ -23,8 +23,27 @@
 						-
 						{{game.releaseYear}}
 					</h4>
+					<div class="card-text">
+						{% if game.console == "Nintendo DS" %}
+							<img class="game-logo" src="{{asset('images/nintendo-ds.svg')}}">
+						{% elseif game.console == "Sony PSP" %}
+							<img class="game-logo" src="{{asset('images/psp.svg')}}">
+						{% elseif game.console == "PlayStation 3" %}
+							<img class="game-logo" src="{{asset('images/ps3.svg')}}">
+						{% elseif game.console == "Nintendo Wii" %}
+							<img class="game-logo" src="{{asset('images/wii.svg')}}">
+						{% elseif game.console == "X360" %}
+							<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+						{% endif %}
+					</div>
 					<p class="card-text">{{game.description}}</p>
-					<h6 class="card-subtitle mb-2 text-muted">
+					{% set genres = game.genres | split(',') %}
+					{% for genre in genres  %}
+						<div class="badge badge-primary text-wrap" style="width: fit-content;">
+							{{ genre }}
+						</div>
+					{% endfor %}
+					<h6 class="card-subtitle my-2 text-muted">
 						Price:
 						{{game.price}}$
 					</h6>
@@ -35,12 +54,64 @@
 		<div class="card my-4">
 			<h5 class="card-header">Leave a Comment:</h5>
 			<div class="card-body">
-				<form>
+				{% if user is defined and user is not null %}
 					<div class="form-group">
-						<textarea class="form-control" rows="3"></textarea>
+						{{ form_start(commentForm) }}
+						{{ form_label(searchform.title, 'Title', {
+								'label_attr' : {
+									'class' : 'my-2'
+								}
+							}) 
+						}}
+						{{ form_widget(commentForm.title, {
+								'attr': {
+									'class' : 'form-control',
+									'placeholder' : 'Title'
+								}
+							}) 
+						}}
+						{{ form_label(commentForm.content, 'Message',{
+								'label_attr' : {
+									'class' : 'my-2'
+								}
+							}) 
+						}}
+						{{ form_widget(commentForm.content, {
+								'attr': {
+									'class' : 'form-control',
+									'placeholder' : 'Comment'
+								}
+							}) 
+						}}
+						{{ form_label(commentForm.note, 'Note' ,{
+								'label_attr' : {
+									'class' : 'my-2'
+								}
+							}) 
+						}}
+						{{ form_widget(commentForm.note, {
+								'attr': {
+									'class' : 'form-control',
+								}
+							}) 
+						}}
+						{{ form_widget(commentForm.send, {
+								'attr' : {
+									'class' : 'btn btn-secondary w-100 mt-4'
+								}
+							}) 
+						}}
+						{{ form_end(commentForm) }}
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</form>
+				{% else %}
+					<p class="card-text mb-1">
+						If you want to post a comment you need to be connected. You don't have an account ?
+						<a href="{{path('register')}}">Create one now.</a>
+					</p>
+					<p class="card-text mt-0">If you already have one, connect by
+						<a href="{{path('login')}}">clicking here.</a>
+					</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>

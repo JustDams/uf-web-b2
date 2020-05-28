@@ -20,14 +20,15 @@ class UsersFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('birthday', BirthdayType::class)
+            ->add('firstname', TextType::class, ['required' => true])
+            ->add('lastname', TextType::class, ['required' => true])
+            ->add('email', EmailType::class, ['required' => true])
+            ->add('birthday', BirthdayType::class, ['required' => true])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
+                'required' => true
             ])
             //->add('balance')
             //->add('registerDate', DateType::class)

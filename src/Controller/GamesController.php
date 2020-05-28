@@ -96,6 +96,8 @@ class GamesController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
+        $user = $this->getUser();
+
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
 
 
@@ -116,6 +118,7 @@ class GamesController extends AbstractController
 
         return $this->render('games/game.html.twig', [
             'game' => $game,
+            'user' => $user,
             'searchform' => $form->createView(),
             'commentForm' => $commentForm->createView(),
         ]);
