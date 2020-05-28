@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Games;
+use App\Form\CommentsFormType;
 use App\Form\SearchFormType;
 use App\Repository\GamesRepository\GamesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,7 @@ class GamesController extends AbstractController
     public function index(Request $request, $page = 1)
     {
         $user = $this->getUser();
-        
+
         if ($page < 1) {
             return $this->redirectToRoute('index', ['page' => 1]);
         }
@@ -83,6 +84,40 @@ class GamesController extends AbstractController
             'games' => $games,
             'research' => $game,
             'searchform' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/game/{id}", name="game")
+     */
+    public function game(Request $request, $id)
+    {
+        if ($id == null || gettype($id) != 'string' ) {
+            return $this->redirectToRoute('index');
+        }
+
+        $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        $commentForm = $this->createForm(CommentsFormType::class);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            return $this->redirectToRoute('game', ['id' => $id]);
+        }
+
+        return $this->render('games/game.html.twig', [
+            'game' => $game,
+            'searchform' => $form->createView(),
+            'commentForm' => $commentForm->createView(),
         ]);
     }
 }
