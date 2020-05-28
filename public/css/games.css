@@ -19,14 +19,12 @@
     flex-direction: row;
 }
 
+.game-container-image {
+    max-height: 365px;
+}
+
 @media screen and (max-width: 992px) {
     .game-container-show {
         flex-direction: column;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .game-container-image {
-        max-height: 365px;
     }
 }
