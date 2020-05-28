@@ -2,63 +2,75 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Comments
- *
- * @ORM\Table(name="comments", indexes={@ORM\Index(name="comments_User0_FK", columns={"id_user"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=CommentsRepository::class)
  */
 class Comments
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_game", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Games::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idGame;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idUser;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=20, nullable=false)
+     * @ORM\Column(type="string", length=150)
      */
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="text")
      */
     private $content;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="note", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(type="float")
      */
     private $note;
 
-    public function getIdGame(): ?int
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getIdGame(): ?Games
     {
         return $this->idGame;
     }
 
-    public function getIdUser(): ?int
+    public function setIdGame(?Games $idGame): self
+    {
+        $this->idGame = $idGame;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?Users
     {
         return $this->idUser;
+    }
+
+    public function setIdUser(?Users $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -96,6 +108,4 @@ class Comments
 
         return $this;
     }
-
-
 }

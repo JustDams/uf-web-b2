@@ -2,83 +2,55 @@
 
 namespace App\Entity;
 
+use App\Repository\CodeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Code
- *
- * @ORM\Table(name="code", indexes={@ORM\Index(name="code_games_id_game_fk", columns={"id_game"}), @ORM\Index(name="Code_User0_FK", columns={"id_user"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=CodeRepository::class)
  */
 class Code
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_code", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idCode;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $code;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="used", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $used;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(type="float")
      */
     private $price;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="purchase_date", type="date", nullable=false)
+     * @ORM\Column(type="date")
      */
     private $purchaseDate;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url_invoice", type="string", length=20, nullable=false)
-     */
-    private $urlInvoice;
-
-    /**
-     * @var \Games
-     *
-     * @ORM\ManyToOne(targetEntity="Games")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_game", referencedColumnName="id_game")
-     * })
-     */
-    private $idGame;
-
-    /**
-     * @var \Users
-     *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     * })
+     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idUser;
 
-    public function getIdCode(): ?int
+    /**
+     * @ORM\ManyToOne(targetEntity=Games::class, inversedBy="codes")
+     */
+    private $idGame;
+
+    public function getId(): ?int
     {
-        return $this->idCode;
+        return $this->id;
     }
 
     public function getCode(): ?string
@@ -129,14 +101,14 @@ class Code
         return $this;
     }
 
-    public function getUrlInvoice(): ?string
+    public function getIdUser(): ?Users
     {
-        return $this->urlInvoice;
+        return $this->idUser;
     }
 
-    public function setUrlInvoice(string $urlInvoice): self
+    public function setIdUser(Users $idUser): self
     {
-        $this->urlInvoice = $urlInvoice;
+        $this->idUser = $idUser;
 
         return $this;
     }
@@ -152,18 +124,4 @@ class Code
 
         return $this;
     }
-
-    public function getIdUser(): ?Users
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?Users $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
-
 }

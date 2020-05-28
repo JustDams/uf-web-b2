@@ -19,21 +19,10 @@ class GamesRepository extends ServiceEntityRepository
         parent::__construct($registry, Games::class);
     }
 
-    /**
-     * @return Games[] Returns an array of 10 first Games
-     */
-
-    public function find10First()
+    public function search($value)
     {
-        return $this->createQueryBuilder('a')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function search($value) {
         return $this->createQueryBuilder('s')
-            ->where("s.title LIKE '%".$value."%'")
+            ->where("s.title LIKE '%" . $value . "%'")
             ->getQuery()
             ->getResult();
     }
@@ -48,13 +37,14 @@ class GamesRepository extends ServiceEntityRepository
             $second += (20 * ($page - 1));
         }
         return $this->createQueryBuilder('g')
-            ->where('g.idGame >= ?1')
-            ->andWhere('g.idGame <= ?2')
+            ->where('g.id >= ?1')
+            ->andWhere('g.id <= ?2')
             ->setParameter(1, $first)
             ->setParameter(2, $second)
             ->getQuery()
             ->getResult();
     }
+
 
     // /**
     //  * @return Games[] Returns an array of Games objects

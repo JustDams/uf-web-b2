@@ -2,48 +2,63 @@
 
 namespace App\Entity;
 
+use App\Repository\RolesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Roles
- *
- * @ORM\Table(name="roles")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=RolesRepository::class)
  */
 class Roles
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_role", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idRole;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=20, nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $name;
+    private $role;
 
-    public function getIdRole(): ?int
+    /**
+     * @ORM\OneToOne(targetEntity=Users::class, mappedBy="idRole", cascade={"persist", "remove"})
+     */
+    private $users;
+
+    public function getId(): ?int
     {
-        return $this->idRole;
+        return $this->id;
     }
 
-    public function getName(): ?string
+    public function getRole(): ?int
     {
-        return $this->name;
+        return $this->role;
     }
 
-    public function setName(string $name): self
+    public function setRole(int $role): self
     {
-        $this->name = $name;
+        $this->role = $role;
 
         return $this;
     }
 
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
 
+    public function setUsers(?Users $users): self
+    {
+        $this->users = $users;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newIdRole = null === $users ? null : $this;
+        if ($users->getIdRole() !== $newIdRole) {
+            $users->setIdRole($newIdRole);
+        }
+
+        return $this;
+    }
 }

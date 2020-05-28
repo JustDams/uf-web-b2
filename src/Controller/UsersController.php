@@ -21,11 +21,11 @@ class UsersController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $user = new Users();
 
+        $user = new Users();
         $role = new Roles();
-        $role->setName("user");
-        $entityManager->persist($role);
+        $role->setRole(0);
+        $user->setIdRole($role);
 
         $form = $this->createForm(UsersFormType::class, $user);
         $form->handleRequest($request);
@@ -33,11 +33,8 @@ class UsersController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            
             $user->setBalance(0);
-            $user->setIdRole($role);
             $user->setRegisterDate(new \DateTime('now'));
-
             $entityManager->persist($user);
             $entityManager->flush();
 

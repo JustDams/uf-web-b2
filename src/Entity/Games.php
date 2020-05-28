@@ -2,103 +2,77 @@
 
 namespace App\Entity;
 
+use App\Repository\GamesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Games
- *
- * @ORM\Table(name="games")
- * @ORM\Entity
- * @ORM\Entity(repositoryClass="App\Repository\GamesRepository")
+ * @ORM\Entity(repositoryClass=GamesRepository::class)
  */
 class Games
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_game", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idGame;
+    private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="genres", type="text", length=65535, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $genres;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="publishers", type="text", length=65535, nullable=true)
+     * @ORM\Column(type="string", length=80)
      */
     private $publishers;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="review_score", type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $reviewScore;
+    private $review_score;
 
     /**
-     * @var float|null
-     *
-     * @ORM\Column(name="used_price", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(type="float")
      */
-    private $usedPrice;
+    private $price;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="console", type="text", length=65535, nullable=true)
+     * @ORM\Column(type="string", length=150)
      */
     private $console;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="release_year", type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $releaseYear;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Users", inversedBy="idGame")
-     * @ORM\JoinTable(name="comments",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_game", referencedColumnName="id_game")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     *   }
-     * )
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="idGame", orphanRemoval=true)
      */
-    private $idUser;
+    private $comments;
 
     /**
-     * Constructor
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idGame")
      */
+    private $codes;
+
     public function __construct()
     {
-        $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->codes = new ArrayCollection();
     }
 
-    public function getIdGame(): ?int
+    public function getId(): ?int
     {
-        return $this->idGame;
+        return $this->id;
     }
 
     public function getTitle(): ?string
@@ -106,7 +80,7 @@ class Games
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -118,7 +92,7 @@ class Games
         return $this->genres;
     }
 
-    public function setGenres(?string $genres): self
+    public function setGenres(string $genres): self
     {
         $this->genres = $genres;
 
@@ -130,7 +104,7 @@ class Games
         return $this->publishers;
     }
 
-    public function setPublishers(?string $publishers): self
+    public function setPublishers(string $publishers): self
     {
         $this->publishers = $publishers;
 
@@ -139,24 +113,24 @@ class Games
 
     public function getReviewScore(): ?int
     {
-        return $this->reviewScore;
+        return $this->review_score;
     }
 
-    public function setReviewScore(?int $reviewScore): self
+    public function setReviewScore(int $review_score): self
     {
-        $this->reviewScore = $reviewScore;
+        $this->review_score = $review_score;
 
         return $this;
     }
 
-    public function getUsedPrice(): ?float
+    public function getPrice(): ?float
     {
-        return $this->usedPrice;
+        return $this->price;
     }
 
-    public function setUsedPrice(?float $usedPrice): self
+    public function setPrice(float $price): self
     {
-        $this->usedPrice = $usedPrice;
+        $this->price = $price;
 
         return $this;
     }
@@ -166,7 +140,7 @@ class Games
         return $this->console;
     }
 
-    public function setConsole(?string $console): self
+    public function setConsole(string $console): self
     {
         $this->console = $console;
 
@@ -178,7 +152,7 @@ class Games
         return $this->releaseYear;
     }
 
-    public function setReleaseYear(?int $releaseYear): self
+    public function setReleaseYear(int $releaseYear): self
     {
         $this->releaseYear = $releaseYear;
 
@@ -186,29 +160,64 @@ class Games
     }
 
     /**
-     * @return Collection|Users[]
+     * @return Collection|Comments[]
      */
-    public function getIdUser(): Collection
+    public function getComments(): Collection
     {
-        return $this->idUser;
+        return $this->comments;
     }
 
-    public function addIdUser(Users $idUser): self
+    public function addComment(Comments $comment): self
     {
-        if (!$this->idUser->contains($idUser)) {
-            $this->idUser[] = $idUser;
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setIdGame($this);
         }
 
         return $this;
     }
 
-    public function removeIdUser(Users $idUser): self
+    public function removeComment(Comments $comment): self
     {
-        if ($this->idUser->contains($idUser)) {
-            $this->idUser->removeElement($idUser);
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getIdGame() === $this) {
+                $comment->setIdGame(null);
+            }
         }
 
         return $this;
     }
 
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setIdGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->contains($code)) {
+            $this->codes->removeElement($code);
+            // set the owning side to null (unless already changed)
+            if ($code->getIdGame() === $this) {
+                $code->setIdGame(null);
+            }
+        }
+
+        return $this;
+    }
 }

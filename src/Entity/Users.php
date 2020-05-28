@@ -2,109 +2,77 @@
 
 namespace App\Entity;
 
+use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Users
- *
- * @ORM\Table(name="users", indexes={@ORM\Index(name="User_Role_FK", columns={"id_role"})})
- * @ORM\Entity
- * @UniqueEntity(
- *     fields={"email"}
- * )
+ * @ORM\Entity(repositoryClass=UsersRepository::class)
  */
 class Users implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false, unique=true)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idUser;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $firstname;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="lastname", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $lastname;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=200, nullable=false, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
+     * @ORM\Column(type="date")
      */
     private $birthday;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="balance", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(type="integer")
      */
     private $balance;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="register_date", type="date", nullable=false)
+     * @ORM\Column(type="date")
      */
     private $registerDate;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
-     * @var \Roles
-     *
-     * @ORM\ManyToOne(targetEntity="Roles")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_role", referencedColumnName="id_role")
-     * })
+     * @ORM\OneToOne(targetEntity=Roles::class, inversedBy="users", cascade={"persist", "remove"})
      */
     private $idRole;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Games", mappedBy="idUser")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="idUser", orphanRemoval=true)
      */
-    private $idGame;
+    private $comments;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->idGame = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
-    public function getIdUser(): ?int
+    public function getId(): ?int
     {
-        return $this->idUser;
+        return $this->id;
     }
 
     public function getFirstname(): ?string
@@ -155,12 +123,12 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getBalance(): ?float
+    public function getBalance(): ?int
     {
         return $this->balance;
     }
 
-    public function setBalance(float $balance): self
+    public function setBalance(int $balance): self
     {
         $this->balance = $balance;
 
@@ -204,28 +172,31 @@ class Users implements UserInterface
     }
 
     /**
-     * @return Collection|Games[]
+     * @return Collection|Comments[]
      */
-    public function getIdGame(): Collection
+    public function getComments(): Collection
     {
-        return $this->idGame;
+        return $this->comments;
     }
 
-    public function addIdGame(Games $idGame): self
+    public function addComment(Comments $comment): self
     {
-        if (!$this->idGame->contains($idGame)) {
-            $this->idGame[] = $idGame;
-            $idGame->addIdUser($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setIdUser($this);
         }
 
         return $this;
     }
 
-    public function removeIdGame(Games $idGame): self
+    public function removeComment(Comments $comment): self
     {
-        if ($this->idGame->contains($idGame)) {
-            $this->idGame->removeElement($idGame);
-            $idGame->removeIdUser($this);
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getIdUser() === $this) {
+                $comment->setIdUser(null);
+            }
         }
 
         return $this;
