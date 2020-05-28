@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Code;
 use App\Entity\Games;
 use App\Form\CommentsFormType;
 use App\Form\SearchFormType;
@@ -98,6 +99,15 @@ class GamesController extends AbstractController
 
         $user = $this->getUser();
 
+        if ($user != null) {
+            $userId = $user->getId();
+            $canComment = $this->getDoctrine()->getRepository(Code::class)->findOneBy([
+                'id' => $id,
+                'idUser' => $userId
+            ]);
+            $canComment == Null ? False : True;
+        }
+
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
 
 
@@ -119,6 +129,7 @@ class GamesController extends AbstractController
         return $this->render('games/game.html.twig', [
             'game' => $game,
             'user' => $user,
+            'canComment' => $canComment,
             'searchform' => $form->createView(),
             'commentForm' => $commentForm->createView(),
         ]);

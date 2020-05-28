@@ -54,7 +54,7 @@
 		<div class="card my-4">
 			<h5 class="card-header">Leave a Comment:</h5>
 			<div class="card-body">
-				{% if user is defined and user is not null %}
+				{% if canComment %}
 					<div class="form-group">
 						{{ form_start(commentForm) }}
 						{{ form_label(searchform.title, 'Title', {
@@ -103,7 +103,11 @@
 						}}
 						{{ form_end(commentForm) }}
 					</div>
-				{% else %}
+				{% elseif canComment == false %}
+					<p class="card-text mb-1">
+						If you want to post a comment you need to buy the game on our platform.
+					</p>
+				{% elseif user is not defined or user is null %}
 					<p class="card-text mb-1">
 						If you want to post a comment you need to be connected. You don't have an account ?
 						<a href="{{path('register')}}">Create one now.</a>
