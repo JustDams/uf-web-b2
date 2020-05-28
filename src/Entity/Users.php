@@ -14,6 +14,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Users implements UserInterface
 {
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -202,11 +207,17 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return [
-            'ROLE_USER'
-        ];
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles=$roles;
+        return $this;
     }
 
     public function getSalt()

@@ -14,12 +14,17 @@ class RolesController extends AbstractController
     {
         $user = $this->getUser();
         if ($user != null) {
-            $role = $user->getRoles();
-            if ($role != 'admin') {
-                return $this->redirectToRoute('index');
+            $role= $user->getRoles();
+            if ($role != 'ROLE_USER') {
+                return $this->render('roles/index.html.twig', [
+                    'role' => $role,
+                ]);
+            }
+            else {
+                return $role;
             }
         } else {
-            return $this->redirectToRoute('index');
+            return $user;
         }
 
         return $this->render('roles/index.html.twig', [
