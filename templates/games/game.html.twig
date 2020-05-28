@@ -11,44 +11,42 @@
 
 {% block body %}
 	<div class="container">
-		<div class="d-flex flex-row">
-			<div class="card d-flex flex-row mr-4 col-12 pl-0">
-				<img src="" id="dynamicImg{{ game.id }}" class="rounded col-5 pl-0" style="max-height: 365px;">
-				<div class="card-body">
-					<h3 class="underline">
-						{{game.title}}
-					</h3>
-					<h4 class="card-subtitle mb-2 text-muted">
-						{{game.publishers == null ? "Unknown" : game.publishers}}
-						-
-						{{game.releaseYear}}
-					</h4>
-					<div class="card-text">
-						{% if game.console == "Nintendo DS" %}
-							<img class="game-logo" src="{{asset('images/nintendo-ds.svg')}}">
-						{% elseif game.console == "Sony PSP" %}
-							<img class="game-logo" src="{{asset('images/psp.svg')}}">
-						{% elseif game.console == "PlayStation 3" %}
-							<img class="game-logo" src="{{asset('images/ps3.svg')}}">
-						{% elseif game.console == "Nintendo Wii" %}
-							<img class="game-logo" src="{{asset('images/wii.svg')}}">
-						{% elseif game.console == "X360" %}
-							<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
-						{% endif %}
-					</div>
-					<p class="card-text">{{game.description}}</p>
-					{% set genres = game.genres | split(',') %}
-					{% for genre in genres  %}
-						<div class="badge badge-primary text-wrap" style="width: fit-content;">
-							{{ genre }}
-						</div>
-					{% endfor %}
-					<h6 class="card-subtitle my-2 text-muted">
-						Price:
-						{{game.price}}$
-					</h6>
-					<button class="btn btn-secondary position-absolute" style="bottom: 10px; right: 10px;">Buy</button>
+		<div class="card game-container-show col-12 p-0">
+			<img src="" id="dynamicImg{{ game.id }}" class="rounded col-lg-4 p-0 card-img-top game-container-image">
+			<div class="card-body">
+				<h3 class="underline">
+					{{game.title}}
+				</h3>
+				<h4 class="card-subtitle mb-2 text-muted">
+					{{game.publishers == null ? "Unknown" : game.publishers}}
+					-
+					{{game.releaseYear}}
+				</h4>
+				<div class="card-text">
+					{% if game.console == "Nintendo DS" %}
+						<img class="game-logo" src="{{asset('images/nintendo-ds.svg')}}">
+					{% elseif game.console == "Sony PSP" %}
+						<img class="game-logo" src="{{asset('images/psp.svg')}}">
+					{% elseif game.console == "PlayStation 3" %}
+						<img class="game-logo" src="{{asset('images/ps3.svg')}}">
+					{% elseif game.console == "Nintendo Wii" %}
+						<img class="game-logo" src="{{asset('images/wii.svg')}}">
+					{% elseif game.console == "X360" %}
+						<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+					{% endif %}
 				</div>
+				<p class="card-text">{{game.description}}</p>
+				{% set genres = game.genres | split(',') %}
+				{% for genre in genres  %}
+					<div class="badge badge-primary text-wrap" style="width: fit-content;">
+						{{ genre }}
+					</div>
+				{% endfor %}
+				<h6 class="card-subtitle my-2 text-muted">
+					Price:
+					{{game.price}}$
+				</h6>
+				<button class="btn btn-secondary position-absolute" style="bottom: 10px; right: 10px;">Buy</button>
 			</div>
 		</div>
 		<div class="card my-4">

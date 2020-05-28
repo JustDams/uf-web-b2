@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Code;
+use App\Entity\Comments;
 use App\Entity\Games;
 use App\Form\CommentsFormType;
 use App\Form\SearchFormType;
@@ -123,6 +124,8 @@ class GamesController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment = new Comments();
+
             return $this->redirectToRoute('game', ['id' => $id]);
         }
 
