@@ -14,9 +14,15 @@
 		<div class="card game-container-show col-12 p-0 shadow">
 			<img src="" id="dynamicImg{{ game.id }}" class="rounded col-lg-4 p-0 card-img-top game-container-image">
 			<div class="card-body">
-				<h3 class="underline">
-					{{game.title}}
-				</h3>
+				<div class="d-flex justify-content-between">
+					<h3>
+						{{game.title}}
+					</h3>
+					<h6 class="text-muted">
+						Note:
+						{{globalNote}}
+					</h6>
+				</div>
 				<h4 class="card-subtitle mb-2 text-muted">
 					{{game.publishers == null ? "Unknown" : game.publishers}}
 					-
@@ -116,17 +122,28 @@
 				{% endif %}
 			</div>
 		</div>
-		<div class="card my-4 shadow">
-			<ul class="list-group list-group-flush">
-				{% for c in comments %}
-					<div>
-						<div></div>
-						<div>{{c.content}}</div>
-						<div>Note: {{c.note}}</div>
-					</div>
-				{% endfor %}
-			</ul>
-		</div>
+		{% if comments | length > 0 %}
+			<div class="card my-4 shadow">
+				<ul class="list-group list-group-flush">
+					{% for c in comments %}
+						<div class="p-3 border-bottom">
+							<div class="d-flex justify-content-between">
+								<h5>
+									Title:
+									{{c.title}}
+								</h5>
+								<h6 class="text-muted">Writed by:
+									{{c.idUser.firstname}}
+									{{c.idUser.lastname}}</h6>
+							</div>
+							<p class="card-text mb-1">{{c.content}}</p>
+							<p class="card-text">Note:
+								{{c.note}}</p>
+						</div>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
 	</div>
 {% endblock %}
 

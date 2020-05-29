@@ -94,7 +94,7 @@ class GamesController extends AbstractController
      */
     public function game(Request $request, $id)
     {
-        if ($id == null || gettype($id) != 'string' ) {
+        if ($id == null || gettype($id) != 'string') {
             return $this->redirectToRoute('index');
         }
 
@@ -114,8 +114,13 @@ class GamesController extends AbstractController
         $comments = $this->getDoctrine()->getRepository(Comments::class)->findBy([
             'idGame' => $id
         ]);
+        $globalNote = Null;
+        for ($i = 0; $i < count($comments); $i++) {
+            $globalNote += $comments[$i]->getNote();
+        }
+        $globalNote = $globalNote / count($comments);
 
-        $form = $this->createForm(SearchFormType::class);
+            $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -141,6 +146,7 @@ class GamesController extends AbstractController
         return $this->render('games/game.html.twig', [
             'game' => $game,
             'user' => $user,
+            'globalNote' => $globalNote,
             'comments' => $comments,
             'canComment' => $canComment,
             'searchform' => $form->createView(),
