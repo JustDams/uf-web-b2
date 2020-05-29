@@ -39,6 +39,12 @@
 									{% endif %}
 								</div>
 							</li>
+							{% if user is defined and user is not null %}
+								<li class="nav-item">
+									<span class="nav-link active">Balance:
+										{{user.balance}}$</span>
+								</li>
+							{% endif %}
 						</ul>
 						<div class="form-inline my-2 my-lg-0">
 							{{ form_start(searchform) }}
