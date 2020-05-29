@@ -20,8 +20,11 @@ class UsersController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->getUser() != null) {
+            return $this->redirectToRoute('index');
+        }
 
+        $entityManager = $this->getDoctrine()->getManager();
         $user = new Users();
 
         $form = $this->createForm(UsersFormType::class, $user);
@@ -57,6 +60,10 @@ class UsersController extends AbstractController
      */
     public function login(Request $request, AuthenticationUtils $utils)
     {
+        if ($this->getUser() != null) {
+            return $this->redirectToRoute('index');
+        }
+
         $error = $utils->getLastAuthenticationError();
         $lastUsername = $utils->getLastUsername();
 

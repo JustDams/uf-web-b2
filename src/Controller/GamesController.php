@@ -69,7 +69,9 @@ class GamesController extends AbstractController
      * @Route("/search/{game}", name="search")
      */
     public function search(Request $request, $game = null)
-    {
+    {       
+        $user = $this->getUser();
+
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
             ->search($game);
@@ -83,6 +85,7 @@ class GamesController extends AbstractController
         }
 
         return $this->render('games/search.html.twig', [
+            'user' => $user,
             'games' => $games,
             'research' => $game,
             'searchform' => $form->createView(),
