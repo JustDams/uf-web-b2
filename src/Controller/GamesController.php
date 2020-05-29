@@ -118,9 +118,11 @@ class GamesController extends AbstractController
         for ($i = 0; $i < count($comments); $i++) {
             $globalNote += $comments[$i]->getNote();
         }
-        $globalNote = $globalNote / count($comments);
+        if (count($comments) > 0) {
+            $globalNote = $globalNote / count($comments);
+        }
 
-            $form = $this->createForm(SearchFormType::class);
+        $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
