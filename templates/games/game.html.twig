@@ -19,8 +19,12 @@
 						{{game.title}}
 					</h3>
 					<h6 class="text-muted">
-						Note:
-						{{globalNote}}
+
+						{% if globalNote == 0%}
+							No note for the moment
+						{% else %}
+							Note: {{globalNote}}
+						{% endif %}
 					</h6>
 				</div>
 				<h4 class="card-subtitle mb-2 text-muted">
