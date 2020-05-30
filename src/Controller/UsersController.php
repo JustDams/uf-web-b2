@@ -87,4 +87,33 @@ class UsersController extends AbstractController
     public function logout()
     {
     }
+
+    /**
+     * @Route("/admin", name="admin")
+     */
+    public function admin(Request $request)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        if ($user != null) {
+            $role = $user->getRoles();
+            if ($role != 'ROLE_USER') {
+                return $this->render('roles/index.html.twig', [
+                    'role' => $role,
+                ]);
+            } else {
+                return $role;
+            }
+        } else {
+            return $user;
+        }
+    }
 }

@@ -69,7 +69,7 @@ class GamesController extends AbstractController
      * @Route("/search/{game}", name="search")
      */
     public function search(Request $request, $game = null)
-    {       
+    {
         $user = $this->getUser();
 
         $games = $this->getDoctrine()
@@ -156,6 +156,27 @@ class GamesController extends AbstractController
             'canComment' => $canComment,
             'searchform' => $form->createView(),
             'commentForm' => $commentForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/type/{type}", name="type")
+     */
+    public function type(Request $request, $type)
+    {
+        $games = $this->getDoctrine()->getRepository(Games::class)->searchType($type);
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('games/type.html.twig', [
+            'games' => $games,
+            'searchform' => $form,
         ]);
     }
 }

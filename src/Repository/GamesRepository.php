@@ -27,6 +27,14 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchType($value)
+    {
+        return $this->createQueryBuilder('s')
+            ->where("s.genres LIKE '%" . $value . "%'")
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findGames($page)
     {
         $first = 1;
