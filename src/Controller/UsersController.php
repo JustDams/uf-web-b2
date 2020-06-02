@@ -118,7 +118,7 @@ class UsersController extends AbstractController
         if ($user != null) {
             $role = $user->getRoles();
             if ($role != 'ROLE_USER') {
-                return $this->render('users/admin.html.twig', [
+                return $this->render('admin/admin.html.twig', [
                     'user' => $user,
                     'role' => $role,
                     'users' => $users,
