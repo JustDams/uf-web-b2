@@ -157,4 +157,12 @@ class UsersController extends AbstractController
             'searchform' => $searchForm->createView(),
         ]);
     }
+
+     /**
+     * @Route("/editUser/{id}", name="editUser")
+     */
+    public function editUser(Request $request, $id)
+    {
+
+    }
 }

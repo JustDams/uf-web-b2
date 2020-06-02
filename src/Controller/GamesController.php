@@ -103,16 +103,22 @@ class GamesController extends AbstractController
 
         $user = $this->getUser();
         $entityManager = $this->getDoctrine()->getManager();
-        $canComment = False;
+        $canComment = null;
 
         if ($user != null) {
             $userId = $user->getId();
             $canComment = $this->getDoctrine()->getRepository(Code::class)->findOneBy([
-                'id' => $id,
+                'idGame' => $id,
                 'idUser' => $userId
             ]);
-            $canComment == Null ? False : True;
         }
+        
+        if ($canComment != null) {
+            $canComment = True;
+        } else {
+            $canComment = False;
+        }
+        
 
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
         $comments = $this->getDoctrine()->getRepository(Comments::class)->findBy([

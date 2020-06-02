@@ -25,8 +25,8 @@ class CommentsController extends AbstractController
                 'id' => $comment->getIdGame()->getId()
             ]);
         }
-        
-        if ($comment->getIdUser() != $user) {
+
+        if ($comment->getIdUser() != $user and $user->getRoles() != 'ROLE_ADMIN') {
             return $this->redirectToRoute('game', [
                 'id' => $comment->getIdGame()->getId()
             ]);
