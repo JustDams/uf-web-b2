@@ -50,7 +50,7 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        return $this->render('users/index.html.twig', [
+        return $this->render('users/register.html.twig', [
             'searchform' => $searchForm->createView(),
             'userForm' => $form->createView(),
         ]);

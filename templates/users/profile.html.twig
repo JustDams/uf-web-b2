@@ -18,7 +18,12 @@
 				</li>
 				<li class="list-group-item">
 					Lastname:
-					{{user.lastname}}</li>
+					{{user.lastname}}
+				</li>
+				<li class="list-group-item">
+					Birthday:
+					{{user.birthday | date("m/d/Y")}}
+				</li>
 				<li class="list-group-item">
 					Email:
 					{{user.email}}
@@ -58,7 +63,8 @@
 								</td>
 								<td>{{g.price}}$</td>
 								<td>{{g.code}}</td>
-								<td>{{g.used == 1 ? "yes" : "no"}} </td>
+								<td>{{g.used == 1 ? "yes" : "no"}}
+								</td>
 								<td>{{g.purchaseDate | date('m/d/Y')}}</td>
 							</tr>
 						{% endfor %}
