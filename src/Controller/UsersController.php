@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Code;
 use App\Entity\Roles;
 use App\Entity\Users;
 use App\Form\SearchFormType;
@@ -142,9 +143,14 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
+        $games = $this->getDoctrine()->getRepository(Code::class)->findBy([
+            'idUser' => $user->getId()
+        ]);
+
         return $this->render('users/profile.html.twig', [
             'user' => $user,
-            'searchform' => $searchForm,
+            'games' => $games,
+            'searchform' => $searchForm->createView(),
         ]);
     }
 }

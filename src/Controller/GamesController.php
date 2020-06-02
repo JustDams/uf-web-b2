@@ -164,6 +164,8 @@ class GamesController extends AbstractController
      */
     public function type(Request $request, $type)
     {
+        $user = $this->getUser();
+
         $games = $this->getDoctrine()->getRepository(Games::class)->searchType($type);
 
         $form = $this->createForm(SearchFormType::class);
@@ -178,6 +180,7 @@ class GamesController extends AbstractController
             'type' => $type,
             'games' => $games,
             'searchform' => $form->createView(),
+            'user' => $user,
         ]);
     }
 }

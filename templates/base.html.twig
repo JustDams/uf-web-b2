@@ -32,6 +32,7 @@
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									{% if user is defined and user is not null %}
+										<a class="dropdown-item" href="{{path('profile')}}">Profile</a>
 										<a class="dropdown-item" href="{{path('logout')}}">Logout</a>
 									{% else %}
 										<a class="dropdown-item" href="{{path('login')}}">Login</a>

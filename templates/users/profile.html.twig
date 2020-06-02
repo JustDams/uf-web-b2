@@ -2,4 +2,68 @@
 {% block title %}
 	Profile
 {% endblock %}
-{% block body %}{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="card shadow">
+			<div class="card-header">
+				Informations
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					Firstname:
+					{{user.firstname}}
+				</li>
+				<li class="list-group-item">
+					Lastname:
+					{{user.lastname}}</li>
+				<li class="list-group-item">
+					Email:
+					{{user.email}}
+				</li>
+				<li class="list-group-item">
+					Balance:
+					{{user.balance}}$
+				</li>
+				<li class="list-group-item">
+					Register date:
+					{{user.registerDate | date("m/d/Y")}}
+				</li>
+			</ul>
+		</div>
+		<div class="card mt-5 shadow">
+			<div class="card-header">
+				Game bought
+			</div>
+			{% if games | length < 1 %}
+				You haven't buy any games for the moment
+			{% else %}
+				<table class="table mb-0">
+					<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Price</th>
+							<th scope="col">Activation code</th>
+							<th scope="col">Activate ?</th>
+							<th scope="col">Purchase date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for g in games %}
+							<tr>
+								<td scope="row">
+									<a href="{{path('game', {'id' : g.idGame.id })}}">{{g.idGame.title}}</a>
+								</td>
+								<td>{{g.price}}$</td>
+								<td>{{g.code}}</td>
+								<td>{{g.used == 1 ? "yes" : "no"}} </td>
+								<td>{{g.purchaseDate | date('m/d/Y')}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	{% endblock %}
