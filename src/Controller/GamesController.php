@@ -175,8 +175,9 @@ class GamesController extends AbstractController
         }
 
         return $this->render('games/type.html.twig', [
+            'type' => $type,
             'games' => $games,
-            'searchform' => $form,
+            'searchform' => $form->createView(),
         ]);
     }
 }

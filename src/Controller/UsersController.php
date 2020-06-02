@@ -103,17 +103,48 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
+        $searchForm = $this->createForm(SearchFormType::class);
+        $searchForm->handleRequest($request);
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $data = $searchForm->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
         if ($user != null) {
             $role = $user->getRoles();
             if ($role != 'ROLE_USER') {
-                return $this->render('roles/index.html.twig', [
+                return $this->render('users/admin.html.twig', [
+                    'user' => $user,
                     'role' => $role,
+                    'searchform' => $searchForm->createView(),
                 ]);
             } else {
-                return $role;
+                return $this->redirectToRoute('index');
             }
         } else {
-            return $user;
+            return $this->redirectToRoute('index');
         }
+    }
+
+    /**
+     * @Route("/profile", name="profile")
+     */
+    public function profile(Request $request)
+    {
+        $user = $this->getUser();
+
+        $searchForm = $this->createForm(SearchFormType::class);
+        $searchForm->handleRequest($request);
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $data = $searchForm->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('users/profile.html.twig', [
+            'user' => $user,
+            'searchform' => $searchForm,
+        ]);
     }
 }
