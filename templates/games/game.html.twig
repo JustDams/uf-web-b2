@@ -145,7 +145,13 @@
 									</h5>
 									<h6 class="text-muted">Writed by:
 										{{c.idUser.firstname}}
-										{{c.idUser.lastname}}</h6>
+										{{c.idUser.lastname}}
+										{% if c.idUser == user %}
+											<a href="{{path('editComment', {id : c.id})}}">
+												<i class="fas fa-pencil-alt"></i>
+											</a>
+										{% endif %}
+									</h6>
 								</div>
 								<p class="card-text mb-1">{{c.content}}</p>
 								<p class="card-text">Note:

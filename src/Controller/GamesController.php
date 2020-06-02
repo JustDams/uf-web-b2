@@ -103,6 +103,7 @@ class GamesController extends AbstractController
 
         $user = $this->getUser();
         $entityManager = $this->getDoctrine()->getManager();
+        $canComment = False;
 
         if ($user != null) {
             $userId = $user->getId();
