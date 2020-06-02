@@ -32,7 +32,6 @@ class UsersFormType extends AbstractType
             ])
             //->add('balance')
             //->add('registerDate', DateType::class)
-            //->add('idRole')
             ->add('register', SubmitType::class);
     }
     

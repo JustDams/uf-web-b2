@@ -6,15 +6,41 @@
 {% block stylesheets %}{% endblock %}
 {% block body %}
 	<div class="container">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th scope="col">Id</th>
-					<th scope="col">Firstname</th>
-					<th scope="col">Lastname</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-		</table>
+		<p>
+			<a class="btn btn-primary" data-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
+				Users
+			</a>
+		</p>
+		<div class="collapse" id="users">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Firstname</th>
+						<th scope="col">Lastname</th>
+						<th scope="col">Birthday</th>
+						<th scope="col">Balance</th>
+						<th scope="col">Register Date</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for u in users %}
+						<tr>
+							<td scope="row">{{u.id}}</td>
+							<td>{{u.firstname}}</td>
+							<td>{{u.lastname}}</td>
+							<td>{{u.birthday | date('m/d/Y')}}</td>
+							<td>{{u.balance}}$</td>
+							<td>{{u.registerDate | date('m/d/Y')}}</td>
+							<td>
+								<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
+								<a><i class="fas fa-pencil-alt"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
 {% endblock %}

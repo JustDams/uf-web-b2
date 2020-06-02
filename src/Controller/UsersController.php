@@ -9,6 +9,7 @@ use App\Form\SearchFormType;
 use App\Form\UsersFormType;
 use Symfony\Component\HttpFoundation\Request;
 use http\Env\Response;
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -112,12 +113,15 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAll();
+
         if ($user != null) {
             $role = $user->getRoles();
             if ($role != 'ROLE_USER') {
                 return $this->render('users/admin.html.twig', [
                     'user' => $user,
                     'role' => $role,
+                    'users' => $users,
                     'searchform' => $searchForm->createView(),
                 ]);
             } else {
