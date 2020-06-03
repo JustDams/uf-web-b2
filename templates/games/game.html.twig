@@ -55,15 +55,17 @@
 					<p class="card-text">{{game.description}}</p>
 					{% set genres = game.genres | split(',') %}
 					{% for genre in genres  %}
-						<div class="badge badge-primary text-wrap" style="width: fit-content;">
-							{{ genre }}
-						</div>
+						{% if genre == "Racing / Driving" %}
+							<a href="{{path('type', {'type': 'Racing'})}}" class="badge badge-primary">{{ genre }}</a>
+						{% else %}
+							<a href="{{path('type', {'type': genre})}}" class="badge badge-primary">{{ genre }}</a>
+						{% endif %}
 					{% endfor %}
 					<h6 class="card-subtitle my-2 text-muted">
 						Price:
 						{{game.price}}$
 					</h6>
-					<button class="btn btn-secondary position-absolute" style="bottom: 10px; right: 10px;">Buy</button>
+					<a href="{{path('addToCart', { 'id' : game.id })}}" class="btn btn-secondary position-absolute" style="bottom: 10px; right: 10px;">Add to cart</a>
 				</div>
 			</div>
 			<div class="card my-4 shadow">

@@ -27,7 +27,7 @@
 							</li>
 
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a class="nav-link dropdown-toggle {{ app.request.attributes.get('_route') == 'profile' or app.request.attributes.get('_route') == 'login' or app.request.attributes.get('_route') == 'register' ? 'active' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Account
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -44,6 +44,11 @@
 								<li class="nav-item">
 									<span class="nav-link active">Balance:
 										{{user.balance}}$</span>
+								</li>
+								<li class="nav-item">
+									<a href="{{path('cart')}}" class="nav-link {{ app.request.attributes.get('_route') == 'cart' ? 'active' }}">Cart
+										<span class="badge badge-light">{{user.carts | length }}</span>
+									</a>
 								</li>
 							{% endif %}
 						</ul>
