@@ -38,15 +38,14 @@ class Code
     private $purchaseDate;
 
     /**
-     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $idUser;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Games::class, inversedBy="codes")
      */
     private $idGame;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="codes")
+     */
+    private $idUser;
 
     public function getId(): ?int
     {
@@ -101,18 +100,6 @@ class Code
         return $this;
     }
 
-    public function getIdUser(): ?Users
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(Users $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
     public function getIdGame(): ?Games
     {
         return $this->idGame;
@@ -121,6 +108,18 @@ class Code
     public function setIdGame(?Games $idGame): self
     {
         $this->idGame = $idGame;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?Users
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?Users $idUser): self
+    {
+        $this->idUser = $idUser;
 
         return $this;
     }

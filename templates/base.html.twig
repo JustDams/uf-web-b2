@@ -50,7 +50,7 @@
 							{% if user is defined and user is not null %}
 								<li class="nav-item">
 									<span class="nav-link active">Balance:
-										{{user.balance}}$</span>
+										{{user.balance | round(2, 'floor')}}$</span>
 								</li>
 								<li class="nav-item">
 									<a href="{{path('cart')}}" class="nav-link {{ app.request.attributes.get('_route') == 'cart' ? 'active' }}">Cart

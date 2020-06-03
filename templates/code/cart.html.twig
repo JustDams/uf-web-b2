@@ -5,13 +5,75 @@
 
 {% block body %}
 	<div class="container">
+		{% if games | length > 0 %}
+			<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								{% if  (user.balance - totalPrice) >= 0 %}
+									Buy confirmation
+								{% else %}
+									Buy infomation
+								{% endif %}
+							</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							{% if  (user.balance - totalPrice) >= 0 %}
+								If you click on buy, your balance will be debited of
+								{{totalPrice}}$, so your new balance will be at
+								{{user.balance - totalPrice}}$.
+							{% else %}
+								You don't have enought money to buy those games.
+								<div class="mt-3 form-group">
+									{{form_start(formMoney)}}
+									{{form_row(formMoney.balance , {
+                                    'label' : 'Add money',
+                                    'label_attr' : {
+                                        'class': 'mr-2',
+                                    },
+                                    'attr' : {
+                                        'class' : 'form-control mb-3'
+                                    }
+                                })}}
+								</div>
+							{% endif %}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							{% if  (user.balance - totalPrice) >= 0 %}
+								<a href="{{path('buy')}}" role="button" class="btn btn-primary">Buy</a>
+							{% else %}
+								{{form_row(formMoney.submit, {
+                                'attr' : {
+                                    'class' : 'btn btn-primary',
+                                    'type' : 'button',
+                                },
+                                'label' : 'Add money',
+                            })}}
+								{{form_end(formMoney)}}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
 		<table class="table mb-0 table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
-					<th scope="col">Price</th>
+					<th scope="col">Price ({{totalPrice}}$)
+					</th>
 					<th scope="col">Console</th>
-					<th scope="col">Action</th>
+					<th class="position-relative" scope="col">
+						Action
+						{% if games | length > 0 %}
+							<a href="" class="btn btn-secondary" style="position: absolute;right: 0.3rem;top: 0.3rem;" role="button" data-toggle="modal" data-target="#buyModal">Buy</a>
+						{% endif %}
+					</th>
 				</tr>
 			</thead>
 			<tbody>

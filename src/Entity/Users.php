@@ -48,7 +48,7 @@ class Users implements UserInterface
     private $birthday;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $balance;
 
@@ -72,10 +72,16 @@ class Users implements UserInterface
      */
     private $carts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idUser")
+     */
+    private $codes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->codes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,12 +137,12 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getBalance(): ?int
+    public function getBalance(): ?float
     {
         return $this->balance;
     }
 
-    public function setBalance(int $balance): self
+    public function setBalance(float $balance): self
     {
         $this->balance = $balance;
 
@@ -251,6 +257,37 @@ class Users implements UserInterface
             // set the owning side to null (unless already changed)
             if ($cart->getIdUser() === $this) {
                 $cart->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->contains($code)) {
+            $this->codes->removeElement($code);
+            // set the owning side to null (unless already changed)
+            if ($code->getIdUser() === $this) {
+                $code->setIdUser(null);
             }
         }
 
