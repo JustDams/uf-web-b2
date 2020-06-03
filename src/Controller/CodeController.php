@@ -26,16 +26,30 @@ class CodeController extends AbstractController
 
     public function sendEmail(Request $request, MailerInterface $mailer, $id)
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
+        $balance = $user -> getBalance();
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
         $code = $this->generateCode();
+        $gamePrice = $game -> getPrice();
 
-        $email = (new Email())
-            ->from('noreply@de-weerd.name')
-            ->to($user->getEmail())
-            ->subject('Activation code of ' . $game->getTitle())
-            ->text('Your activation code for the game ' . $game->getTitle() . ' is ' . $code);
-
+        if ($balance < $gamePrice) {
+            $email = (new Email())
+                ->from('noreply@de-weerd.name')
+                ->to($user->getEmail())
+                ->subject('Not enough Money')
+                ->text('You don\'t have enough money to buy' . $game->getTitle().'. Your balance is at' . $balance);
+        }
+        else {
+            $email = (new Email())
+                ->from('noreply@de-weerd.name')
+                ->to($user->getEmail())
+                ->subject('Activation code of ' . $game->getTitle())
+                ->text('Your activation code for the game ' . $game->getTitle() . ' is ' . $code);
+            $user->setBalance($balance - $gamePrice);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
         $mailer->send($email);
 
         $form = $this->createForm(SearchFormType::class);

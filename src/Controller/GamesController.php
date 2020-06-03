@@ -190,4 +190,28 @@ class GamesController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    /**
+     * @Route("/esport", name="esport")
+     */
+    public function esport(Request $request)
+    {
+        $user = $this->getUser();
+
+        $games = $this->getDoctrine()->getRepository(Games::class)->searchEsport();
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('games/esport.html.twig', [
+            'games' => $games,
+            'searchform' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
 }

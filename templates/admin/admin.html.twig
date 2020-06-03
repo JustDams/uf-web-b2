@@ -18,6 +18,7 @@
 						<th scope="col">Id</th>
 						<th scope="col">Firstname</th>
 						<th scope="col">Lastname</th>
+						<th scope="col">Email</th>
 						<th scope="col">Birthday</th>
 						<th scope="col">Balance</th>
 						<th scope="col">Register Date</th>
@@ -30,12 +31,13 @@
 							<td scope="row">{{u.id}}</td>
 							<td>{{u.firstname}}</td>
 							<td>{{u.lastname}}</td>
+							<td>{{u.email}}</td>
 							<td>{{u.birthday | date('m/d/Y')}}</td>
 							<td>{{u.balance}}$</td>
 							<td>{{u.registerDate | date('m/d/Y')}}</td>
 							<td>
 								<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
-								<a><i class="fas fa-pencil-alt"></i></a>
+								<a href="{{path('editUser', {'id' : u.id})}}"><i class="fas fa-pencil-alt"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
