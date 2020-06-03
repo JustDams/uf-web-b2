@@ -67,9 +67,15 @@ class Users implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idUser")
+     */
+    private $carts;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,5 +224,36 @@ class Users implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Cart[]
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->contains($cart)) {
+            $this->carts->removeElement($cart);
+            // set the owning side to null (unless already changed)
+            if ($cart->getIdUser() === $this) {
+                $cart->setIdUser(null);
+            }
+        }
+
+        return $this;
     }
 }

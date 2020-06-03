@@ -69,10 +69,16 @@ class Games
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idGame")
+     */
+    private $carts;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->codes = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,6 +240,37 @@ class Games
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cart[]
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setIdGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->contains($cart)) {
+            $this->carts->removeElement($cart);
+            // set the owning side to null (unless already changed)
+            if ($cart->getIdGame() === $this) {
+                $cart->setIdGame(null);
+            }
+        }
 
         return $this;
     }
