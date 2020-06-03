@@ -38,6 +38,9 @@
 									{% if user is defined and user is not null %}
 										<a class="dropdown-item" href="{{path('profile')}}">Profile</a>
 										<a class="dropdown-item" href="{{path('logout')}}">Logout</a>
+										{% if is_granted('ROLE_ADMIN') %}
+											<a class="dropdown-item" href="{{path('admin')}}">Admin Dashboard</a>
+										{% endif %}
 									{% else %}
 										<a class="dropdown-item" href="{{path('login')}}">Login</a>
 										<a class="dropdown-item" href="{{path('register')}}">Register</a>

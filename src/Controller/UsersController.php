@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UsersController extends AbstractController
@@ -93,7 +94,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function profile(Request $request)
+    public function profile(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $user = $this->getUser();
 
@@ -105,6 +106,20 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
+        $form = $this->createForm(UsersFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('profile');
+        }
+
         $games = $this->getDoctrine()->getRepository(Code::class)->findBy([
             'idUser' => $user->getId()
         ]);
@@ -112,6 +127,7 @@ class UsersController extends AbstractController
         return $this->render('users/profile.html.twig', [
             'user' => $user,
             'games' => $games,
+            'userForm' => $form->createView(),
             'searchform' => $searchForm->createView(),
         ]);
     }
@@ -119,8 +135,36 @@ class UsersController extends AbstractController
      /**
      * @Route("/editUser/{id}", name="editUser")
      */
-    public function editUser(Request $request, $id)
+    public function editUser(Request $request, Users $user, UserPasswordEncoderInterface $encoder)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        $searchForm = $this->createForm(SearchFormType::class);
+        $searchForm->handleRequest($request);
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $data = $searchForm->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        $form = $this->createForm(UsersFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('profile');
+        }
+
+
+
+
+        return $this->render('users/edit.html.twig', ['searchform' => $searchForm->createView(),
+            'userForm' => $form->createView()]);
     }
 }
