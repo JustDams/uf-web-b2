@@ -11,83 +11,94 @@
 			<div class="card-header">
 				Informations
 			</div>
-			{{ form_start(userForm) }}
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					{{ form_row(userForm.firstname, {
-						'attr' : {
-							'class' : 'form-control',
-							'placeholder' : 'Firstname'
-						}
-					})}}
+			<div class="card-body">
+				{{ form_start(userForm) }}
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						{{ form_row(userForm.firstname, {
+							'attr' : {
+								'class' : 'form-control',
+								'placeholder' : 'Firstname',
+								'readonly' : 'readonly'
+							}
+						})}}
+					</div>
+					<div class="form-group col-md-6">
+						{{ form_row(userForm.lastname, {
+							'attr' : {
+								'class' : 'form-control',
+								'placeholder' : 'Lastname',
+								'readonly' : 'readonly'
+							}
+						})}}
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					{{ form_row(userForm.lastname, {
-						'attr' : {
-							'class' : 'form-control',
-							'placeholder' : 'Lastname'
-						}
-					})}}
-				</div>
-			</div>
-			<div class="form-group">
-				{{ form_row(userForm.email, {
-					'attr' : {
-						'class' : 'form-control',
-						'placeholder' : 'example@example.com'
+				<div class="form_group">
+					{{ form_row(userForm.email,
+					{'attr': {
+						'class': 'form-control mb-3',
+						'placeholder' : 'Email'
 					}
-				})}}
-			</div>
-			<div class="form_group">
-				{{ form_row(userForm.password.first,
+					})}}
+				</div>
+				<div class="form_group">
+					{{ form_row(userForm.password.first,
 					{'attr': {
 						'class': 'form-control mb-3',
 						'placeholder' : 'Password'
 					}
 					})}}
-			</div>
-			<div class="form_group">
-				{{ form_row(userForm.password.second,
-					{'attr': {
-						'class': 'form-control mb-3',
-						'placeholder' : 'Confirm password'
-					}
-					})}}
-			</div>
-			<div class="form_group">
-				{{ form_label(userForm.birthday) }}
-				<div class="d-flex justify-content-sm-between">
-
-					{{ form_widget(userForm.birthday.day,
-						{'attr': {
-							'class': 'form-control mr-1  mb-3',
-						}
-						})}}
-					{{ form_widget(userForm.birthday.month,
-						{'attr': {
-							'class': 'form-control mr-1  mb-3',
-						}
-						})}}
-					{{ form_widget(userForm.birthday.year,
-						{'attr': {
-							'class': 'form-control',
-						}
-						})}}
 				</div>
-			</div>
-			{{ form_widget(userForm.register,
-				{'attr': {
-					'class': 'btn btn-light w-100',
-				}
+				<div class="form_group">
+					{{ form_row(userForm.password.second,{
+						'attr': {
+							'class': 'form-control mb-3',
+							'placeholder' : 'Confirm password'
+						}
+					})}}
+				</div>
+				<div class="form_group">
+					{{ form_label(userForm.birthday) }}
+					<div class="d-flex justify-content-sm-between">
+						{{ form_widget(userForm.birthday.day, 
+							{'attr': {
+								'class': 'form-control mr-1  mb-3',
+								'readonly' : 'readonly'
+							}
+						})}}
+						{{ form_widget(userForm.birthday.month, 
+							{'attr': {
+								'class': 'form-control mr-1  mb-3',
+								'readonly' : 'readonly'
+							}
+						})}}
+						{{ form_widget(userForm.birthday.year, 
+							{'attr': {
+								'class': 'form-control',
+								'readonly' : 'readonly'
+							}
+						})}}
+					</div>
+				</div>
+				{{ form_widget(userForm.register,
+					{'attr': {
+						'class': 'btn btn-secondary w-100',
+					},
+					'label': 'Update'
 				})}}
-			{{ form_end(userForm) }}
+				{{ form_end(userForm) }}
+			</div>
 		</div>
 		<div class="card mt-5 shadow">
 			<div class="card-header">
 				Game bought
 			</div>
 			{% if games | length < 1 %}
-				You haven't buy any games for the moment
+				<div class="card-body">
+					<p class="card-text">
+						You haven't buy any games for the moment
+					</p>
+				</div>
 			{% else %}
 				<table class="table mb-0 table-striped">
 					<thead>
