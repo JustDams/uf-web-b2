@@ -96,7 +96,28 @@ class UsersController extends AbstractController
      */
     public function profile(Request $request, UserPasswordEncoderInterface $encoder)
     {
+        $manager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
+
+        $form = $this->createForm(UsersFormType::class,$user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+            $user->setEmail($form->getData()->getEmail());
+            $user->setFirstname($user->getFirstname());
+            $user->setLastname($user->getLastname());
+
+            $manager->persist($user);
+            $manager->flush();
+
+            return $this->redirectToRoute('profile');
+        }
+
+        $games = $this->getDoctrine()->getRepository(Code::class)->findBy([
+            'idUser' => $user->getId()
+        ]);
 
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($request);
@@ -106,24 +127,6 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        $form = $this->createForm(UsersFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $hash = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hash);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            return $this->redirectToRoute('profile');
-        }
-
-        $games = $this->getDoctrine()->getRepository(Code::class)->findBy([
-            'idUser' => $user->getId()
-        ]);
-
         return $this->render('users/profile.html.twig', [
             'user' => $user,
             'games' => $games,
@@ -132,7 +135,7 @@ class UsersController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/editUser/{id}", name="editUser")
      */
     public function editUser(Request $request, Users $user, UserPasswordEncoderInterface $encoder)
@@ -164,7 +167,9 @@ class UsersController extends AbstractController
 
 
 
-        return $this->render('users/edit.html.twig', ['searchform' => $searchForm->createView(),
-            'userForm' => $form->createView()]);
+        return $this->render('users/edit.html.twig', [
+            'searchform' => $searchForm->createView(),
+            'userForm' => $form->createView()
+        ]);
     }
 }
