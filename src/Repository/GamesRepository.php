@@ -53,6 +53,14 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchEsport()
+    {
+        return $this->createQueryBuilder('e')
+            ->where("e.id = 1213")
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Games[] Returns an array of Games objects
