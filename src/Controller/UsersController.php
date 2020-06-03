@@ -45,6 +45,8 @@ class UsersController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            
+            $this->addFlash('success', 'Your account as been well created.');
             return $this->redirectToRoute('login');
         }
 

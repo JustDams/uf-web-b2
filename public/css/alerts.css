@@ -1,0 +1,7 @@
+.alert-container {
+    position: absolute;
+    top: 90px;
+    display: flex;
+    justify-content: center;
+    max-width: unset!important;
+}
