@@ -28,19 +28,18 @@ class CodeController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $balance = $user -> getBalance();
+        $balance = $user->getBalance();
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
         $code = $this->generateCode();
-        $gamePrice = $game -> getPrice();
+        $gamePrice = $game->getPrice();
 
         if ($balance < $gamePrice) {
             $email = (new Email())
                 ->from('noreply@de-weerd.name')
                 ->to($user->getEmail())
                 ->subject('Not enough Money')
-                ->text('You don\'t have enough money to buy' . $game->getTitle().'. Your balance is at' . $balance);
-        }
-        else {
+                ->text('You don\'t have enough money to buy' . $game->getTitle() . '. Your balance is at' . $balance);
+        } else {
             $email = (new Email())
                 ->from('noreply@de-weerd.name')
                 ->to($user->getEmail())
@@ -73,14 +72,19 @@ class CodeController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
-        $item = new Cart();
 
-        $item->setIdUser($user);
-        $item->setIdGame($game);
+        if ($user != null) {
+            $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+            $item = new Cart();
 
-        $entityManager->persist($item);
-        $entityManager->flush();
+            $item->setIdUser($user);
+            $item->setIdGame($game);
+
+            $entityManager->persist($item);
+            $entityManager->flush();
+        } else {
+            $this->addFlash('errors', 'You have to be connected to do that.');
+        }
 
         return $this->redirectToRoute('game', [
             'id' => $id
@@ -103,7 +107,7 @@ class CodeController extends AbstractController
         ]);
         $games = [];
 
-        for ($i=0; $i < count($cartId); $i++) { 
+        for ($i = 0; $i < count($cartId); $i++) {
             $games[$i] = $this->getDoctrine()->getRepository(Games::class)->find($cartId[$i]->getIdGame());
         }
 
@@ -123,18 +127,18 @@ class CodeController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/removeFromCart/{id}", name="removeFromCart")
      */
     public function removeFromCart($id)
     {
         $user = $this->getUser();
         $manager = $this->getDoctrine()->getManager();
-        $item = $manager->find(Cart::class,$id);
-        if($item != null) {
+        $item = $manager->find(Cart::class, $id);
+        if ($item != null) {
             $manager->remove($item);
-            $manager->flush();    
-        }   
+            $manager->flush();
+        }
 
         return $this->redirectToRoute('cart');
     }
