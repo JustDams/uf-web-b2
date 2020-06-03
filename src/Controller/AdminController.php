@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Games;
 use App\Entity\Users;
 use App\Form\SearchFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,10 @@ class AdminController extends AbstractController
     public function admin(Request $request)
     {
         $user = $this->getUser();
+
+        $games = $this->getDoctrine()
+            ->getRepository(Games::class)
+            ->search10LastGames();
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
@@ -38,8 +43,9 @@ class AdminController extends AbstractController
 
         if ($user != null) {
             $role = $user->getRoles();
-            if ($role != 'ROLE_USER') {
+            if ($role[0] == 'ROLE_ADMIN') {
                 return $this->render('admin/admin.html.twig', [
+                    'games' => $games,
                     'user' => $user,
                     'role' => $role,
                     'users' => $users,

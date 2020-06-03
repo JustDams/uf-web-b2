@@ -53,6 +53,14 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function search10LastGames() {
+        return $this->createQueryBuilder('t')
+            ->orderBy("t.releaseYear", "desc")
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function searchEsport()
     {
         return $this->createQueryBuilder('e')
