@@ -93,6 +93,11 @@ class CodeController extends AbstractController
     public function cart(Request $request)
     {
         $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirectToRoute('index');
+        }
+
         $cartId = $this->getDoctrine()->getRepository(Cart::class)->findBy([
             'idUser' => $user->getId(),
         ]);

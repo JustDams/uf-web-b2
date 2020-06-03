@@ -103,6 +103,10 @@ class UsersController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
+        if ($user == null) {
+            return $this->redirectToRoute('index');
+        }
+
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, ['required' => true])
             ->add('password', RepeatedType::class, [
@@ -127,7 +131,7 @@ class UsersController extends AbstractController
         }
 
         $games = $this->getDoctrine()->getRepository(Code::class)->findBy([
-            'idUser' => $user->getId()
+            'idUser' => $user->getId(),
         ]);
 
         $searchForm = $this->createForm(SearchFormType::class);
