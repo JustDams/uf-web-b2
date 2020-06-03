@@ -55,22 +55,21 @@
 			<div class="form_group">
 				{{ form_label(userForm.birthday) }}
 				<div class="d-flex justify-content-sm-between">
-
 					{{ form_widget(userForm.birthday.day, 
-                {'attr': {
-                    'class': 'form-control mr-1  mb-3',
-                }
-            })}}
+                        {'attr': {
+                            'class': 'form-control mr-1  mb-3',
+                        }
+                    })}}
 					{{ form_widget(userForm.birthday.month, 
-                {'attr': {
-                    'class': 'form-control mr-1  mb-3',
-                }
-            })}}
+                        {'attr': {
+                            'class': 'form-control mr-1  mb-3',
+                        }
+                    })}}
 					{{ form_widget(userForm.birthday.year, 
-                {'attr': {
-                    'class': 'form-control',
-                }
-            })}}
+                        {'attr': {
+                            'class': 'form-control',
+                        }
+                    })}}
 				</div>
 			</div>
 			{{ form_widget(userForm.register, 

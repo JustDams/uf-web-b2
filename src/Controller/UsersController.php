@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use http\Env\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\User;
@@ -99,15 +103,22 @@ class UsersController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
-        $form = $this->createForm(UsersFormType::class,$user);
+        $form = $this->createFormBuilder($user)
+            ->add('email', EmailType::class, ['required' => true])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options'  => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat Password'],
+                'required' => true
+            ])
+            ->add('register', SubmitType::class)
+            ->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            $user->setEmail($form->getData()->getEmail());
-            $user->setFirstname($user->getFirstname());
-            $user->setLastname($user->getLastname());
 
             $manager->persist($user);
             $manager->flush();
