@@ -53,6 +53,7 @@ class CodeController extends AbstractController
             $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
             $stock = $game->getStock();
             if ($stock < 1) {
+                $this->addFlash('errors', 'The stock is empty for this game, come back later.');
                 return $this->redirectToRoute('game', [
                     'id' => $id
                 ]);
