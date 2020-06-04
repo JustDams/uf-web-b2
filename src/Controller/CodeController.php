@@ -109,7 +109,12 @@ class CodeController extends AbstractController
         $formMoney->handleRequest($request);
 
         if ($formMoney->isSubmitted() && $formMoney->isValid()) {
-            $user->setBalance($balance + $formMoney->getData()['balance']);
+            $addBalance = $formMoney->getData()['balance'];
+            if ($addBalance <= 0) {
+                $this->addFlash('errors','This value is not valid.');
+                return $this->redirectToRoute('cart');
+            }
+            $user->setBalance($balance + $addBalance);
             $manager->persist($user);
             $manager->flush();
 
