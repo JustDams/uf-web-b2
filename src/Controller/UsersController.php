@@ -10,11 +10,15 @@ use App\Form\UsersFormType;
 use Symfony\Component\HttpFoundation\Request;
 use http\Env\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\User;
@@ -45,7 +49,7 @@ class UsersController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            
+
             $this->addFlash('success', 'Your account as been well created.');
             return $this->redirectToRoute('login');
         }
@@ -155,9 +159,11 @@ class UsersController extends AbstractController
     /**
      * @Route("/editUser/{id}", name="editUser")
      */
-    public function editUser(Request $request, Users $user, UserPasswordEncoderInterface $encoder)
+    public function editUser(Request $request, UserPasswordEncoderInterface $encoder, $id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
 
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($request);
@@ -167,26 +173,35 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        $form = $this->createForm(UsersFormType::class, $user);
+        $form = $this->createFormBuilder($user)
+            ->add('firstname', TextType::class, ['required' => true])
+            ->add('lastname', TextType::class, ['required' => true])
+            ->add('email', EmailType::class, ['required' => true])
+            ->add('email', EmailType::class, ['required' => true])
+            ->add('birthday', BirthdayType::class, ['required' => true])
+            ->add('balance', MoneyType::class, ['required' => true])
+            ->add('register', SubmitType::class)
+            ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $hash = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hash);
-
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('profile');
         }
 
-
-
-
         return $this->render('users/edit.html.twig', [
+            'user' => $user,
             'searchform' => $searchForm->createView(),
             'userForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/removeUser/{id}", name="removeUser")
+     */
+    public function removeUser($id)
+    {
+        //test
     }
 }
