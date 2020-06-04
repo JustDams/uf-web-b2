@@ -69,6 +69,14 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findGamesByString($str){
+        return $this->createQueryBuilder('g')
+            ->where('g.title LIKE :str')
+            ->setParameter('str', '%'.$str.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Games[] Returns an array of Games objects

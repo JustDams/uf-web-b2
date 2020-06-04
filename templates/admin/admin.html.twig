@@ -15,7 +15,7 @@
 							<div class="widget-heading">Total Orders</div>
 						</div>
 						<div class="widget-content-right">
-							<div class="widget-numbers text-white"><span>1896</span></div>
+							<div class="widget-numbers text-white"><span>{{ order }}</span></div>
 						</div>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 							<div class="widget-subheading">Total Clients Profit</div>
 						</div>
 						<div class="widget-content-right">
-							<div class="widget-numbers text-white"><span>$ 568</span></div>
+							<div class="widget-numbers text-white"><span>$ {{ purchase }}</span></div>
 						</div>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 							<div class="widget-subheading">Total Games' Stock</div>
 						</div>
 						<div class="widget-content-right">
-							<div class="widget-numbers text-white"><span>3000</span></div>
+								<div class="widget-numbers text-white"><span>{{ stock }}</span></div>
 						</div>
 					</div>
 				</div>
@@ -51,6 +51,25 @@
 			<div class="col-md-12">
 				<div class="main-card mb-3 card">
 					<div class="table-responsive">
+						<div class="table-responsive">
+							<div class="form-inline my-2 my-lg-0">
+								{{ form_start(formUsers) }}
+								{{ form_widget(formUsers.name , {
+									'attr': {
+										'class' : 'form-control my-2 mx-2 mr-sm-2',
+										'placeholder' : 'Search...'
+									}
+								})
+								}}
+								{{ form_widget(formUsers.submit , {
+									'attr': {
+										'class' : 'btn btn-light my-2 my-sm-0',
+										'label' : 'Search'
+									}
+								})
+								}}
+								{{ form_end(formUsers) }}
+							</div>
 						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
 							<thead>
 							<tr>
@@ -98,6 +117,24 @@
 			<div class="col-md-12">
 				<div class="main-card mb-3 card">
 					<div class="table-responsive">
+						<div class="form-inline my-2 my-lg-0">
+							{{ form_start(formGames) }}
+							{{ form_widget(formGames.game , {
+								'attr': {
+									'class' : 'form-control my-2 mx-2 mr-sm-2',
+									'placeholder' : 'Search...'
+								}
+							})
+							}}
+							{{ form_widget(formGames.submit , {
+								'attr': {
+									'class' : 'btn btn-light my-2 my-sm-0',
+									'label' : 'Search'
+								}
+							})
+							}}
+							{{ form_end(formGames) }}
+						</div>
 						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
 							<thead>
 							<tr>

@@ -190,7 +190,7 @@ class CodeController extends AbstractController
             $this->addFlash('success', 'You\'ll receive the activation(s) code(s) on your email.');
             return $this->redirectToRoute('cart');
         } else {
-            $this->addFlash('errors', 'You don\'t have enought money.');
+            $this->addFlash('errors', 'You don\'t have enough money.');
             return $this->redirectToRoute('cart');
         }
     }
