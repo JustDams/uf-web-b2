@@ -37,7 +37,7 @@
 									{% endif %}
 								</div>
 								<img class="card-img game-image" id="dynamicImg{{ g.id }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'"/>
-								<p class="card-text">{{g.description}}.</p>
+								<p class="card-text">{{g.description|slice(0,150)}}...</p>
 								{% set genres = g.genres | split(',') %}
 								{% for genre in genres  %}
 									{% if genre == "Racing / Driving" %}
