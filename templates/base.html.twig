@@ -49,8 +49,9 @@
 							</li>
 							{% if user is defined and user is not null %}
 								<li class="nav-item">
-									<span class="nav-link active">Balance:
-										{{user.balance | round(2, 'floor')}}$</span>
+									<span class="nav-link active">Balance
+										<span class="badge badge-{{ user.balance < 1 ? 'danger' : 'success' }}">{{user.balance | round(2, 'floor')}}$</span>
+									</span>
 								</li>
 								<li class="nav-item">
 									<a href="{{path('cart')}}" class="nav-link {{ app.request.attributes.get('_route') == 'cart' ? 'active' }}">Cart

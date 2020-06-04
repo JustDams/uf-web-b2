@@ -40,11 +40,18 @@ class AdminController extends AbstractController
         }
 
         $users = $this->getDoctrine()->getRepository(Users::class)->findAll();
+        $allGames = $this->getDoctrine()->getRepository(Games::class)->findAll();
+        $stock = 0;
+
+        for ($i=0; $i < count($allGames); $i++) { 
+            $stock += $allGames[$i]->getStock();
+        }
 
         if ($user != null) {
             $role = $user->getRoles();
             if ($role[0] == 'ROLE_ADMIN') {
                 return $this->render('admin/admin.html.twig', [
+                    'stock' => $stock,
                     'games' => $games,
                     'user' => $user,
                     'role' => $role,

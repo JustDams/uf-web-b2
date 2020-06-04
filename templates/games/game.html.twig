@@ -25,13 +25,14 @@
 							{{game.title}}
 						</h3>
 						<h6 class="text-muted">
-
 							{% if globalNote == 0%}
 								No note for the moment
 							{% else %}
 								Note:
 								{{globalNote | round(2, 'floor') }}
 							{% endif %}
+							<p>Game stock:
+								{{game.stock}}</p>
 						</h6>
 					</div>
 					<h4 class="card-subtitle mb-2 text-muted">
@@ -157,7 +158,7 @@
 										{% endif %}
 									</h6>
 								</div>
-								<p class="card-text mb-1">{{c.content}}</p>
+								<p class="card-text mb-1">{{ c.content }}</p>
 								<p class="card-text">Note:
 									{{c.note}}</p>
 							</div>
