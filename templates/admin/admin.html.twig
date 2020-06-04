@@ -3,7 +3,8 @@
 {% block title %}
 	Admin
 {% endblock %}
-{% block stylesheets %}<link href="{{asset('/css/dashboard.css')}}" type="text/css" rel="stylesheet">{% endblock %}
+{% block stylesheets %}<link href="{{asset('/css/dashboard.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
 {% block body %}
 	<div class="container">
 
@@ -15,7 +16,9 @@
 							<div class="widget-heading">Total Orders</div>
 						</div>
 						<div class="widget-content-right">
-							<div class="widget-numbers text-white"><span>{{ order }}</span></div>
+							<div class="widget-numbers text-white">
+								<span>{{ order }}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -28,7 +31,10 @@
 							<div class="widget-subheading">Total Clients Profit</div>
 						</div>
 						<div class="widget-content-right">
-							<div class="widget-numbers text-white"><span>$ {{ purchase }}</span></div>
+							<div class="widget-numbers text-white">
+								<span>$
+									{{ purchase }}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -41,7 +47,9 @@
 							<div class="widget-subheading">Total Games' Stock</div>
 						</div>
 						<div class="widget-content-right">
-								<div class="widget-numbers text-white"><span>{{ stock }}</span></div>
+							<div class="widget-numbers text-white">
+								<span>{{ stock }}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -70,49 +78,54 @@
 								}}
 								{{ form_end(formUsers) }}
 							</div>
-						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
-							<thead>
-							<tr>
-								<th class="text-center" scope="col">Id</th>
-								<th scope="col">Name</th>
-								<th class="text-center" scope="col">Birthday</th>
-								<th class="text-center" scope="col">Balance</th>
-								<th class="text-center" scope="col">Register Date</th>
-								<th class="text-center" scope="col">Actions</th>
-							</tr>
-							</thead>
-							<tbody>
-							{% for u in users %}
-							<tr>
-								<td class="text-center text-muted">{{u.id}}</td>
-								<td>
-									<div class="">
-										<div class="">
-											<div class="">
-												<div class="widget-heading">{{ u.firstname }} {{ u.lastname }}</div>
-												<div class="">{{ u.email }}</div>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="text-center">{{ u.birthday | date('m/d/Y') }}</td>
-								<td class="text-center">
-									<div class="badge badge-warning">{{ u.balance }}$</div>
-								</td>
-								<td class="text-center">{{ u.registerdate | date('m/d/Y')}}</td>
-								<td class="text-center">
-									<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
-									<a href="{{path('editUser', {'id' : u.id})}}"><i class="fas fa-pencil-alt"></i></a>
-								</td>
-							</tr>
-							{% endfor %}
-							</tbody>
-						</table>
+							<table class="align-middle mb-0 table table-borderless table-striped table-hover">
+								<thead>
+									<tr>
+										<th class="text-center" scope="col">Id</th>
+										<th scope="col">Name</th>
+										<th class="text-center" scope="col">Birthday</th>
+										<th class="text-center" scope="col">Balance</th>
+										<th class="text-center" scope="col">Register Date</th>
+										<th class="text-center" scope="col">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for u in users %}
+										<tr>
+											<td class="text-center text-muted">{{u.id}}</td>
+											<td>
+												<div class="">
+													<div class="">
+														<div class="">
+															<div class="widget-heading">{{ u.firstname }}
+																{{ u.lastname }}</div>
+															<div class="">{{ u.email }}</div>
+														</div>
+													</div>
+												</div>
+											</td>
+											<td class="text-center">{{ u.birthday | date('m/d/Y') }}</td>
+											<td class="text-center">
+												<div class="badge badge-warning">{{ u.balance }}$</div>
+											</td>
+											<td class="text-center">{{ u.registerdate | date('m/d/Y')}}</td>
+											<td class="text-center">
+												<a href="" class="mx-2">
+													<i class="fas fa-trash"></i>
+												</a>
+												<a href="{{path('editUser', {'id' : u.id})}}">
+													<i class="fas fa-pencil-alt"></i>
+												</a>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<div class="row">
 			<div class="col-md-12">
 				<div class="main-card mb-3 card">
@@ -137,44 +150,48 @@
 						</div>
 						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
 							<thead>
-							<tr>
-								<th class="text-center" scope="col">Id</th>
-								<th scope="col">title</th>
-								<th class="text-center" scope="col">Publishers</th>
-								<th class="text-center" scope="col">Price</th>
-								<th class="text-center" scope="col">Console</th>
-								<th class="text-center" scope="col">Actions</th>
-							</tr>
+								<tr>
+									<th class="text-center" scope="col">Id</th>
+									<th scope="col">title</th>
+									<th class="text-center" scope="col">Publishers</th>
+									<th class="text-center" scope="col">Price</th>
+									<th class="text-center" scope="col">Console</th>
+									<th class="text-center" scope="col">Actions</th>
+								</tr>
 							</thead>
 							<tbody>
-							{% for g in games %}
-								<tr>
-									<td class="text-center text-muted">{{g.id}}</td>
-									<td>
-										<div class="">
+								{% for g in games %}
+									<tr>
+										<td class="text-center text-muted">{{g.id}}</td>
+										<td>
 											<div class="">
 												<div class="">
-													<div class="widget-heading">{{ g.title }} </div>
+													<div class="">
+														<div class="widget-heading">{{ g.title }}
+														</div>
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
-									<td class="text-center">{{ g.publishers }}</td>
-									<td class="text-center">
-										<div class="badge badge-warning">{{ g.price }}$</div>
-									</td>
-									<td class="text-center">{{ g.console }}</td>
-									<td class="text-center">
-										<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
-										<a href=""><i class="fas fa-pencil-alt"></i></a>
-									</td>
-								</tr>
-							{% endfor %}
+										</td>
+										<td class="text-center">{{ g.publishers }}</td>
+										<td class="text-center">
+											<div class="badge badge-warning">{{ g.price }}$</div>
+										</td>
+										<td class="text-center">{{ g.console }}</td>
+										<td class="text-center">
+											<a href="" class="mx-2">
+												<i class="fas fa-trash"></i>
+											</a>
+											<a href="">
+												<i class="fas fa-pencil-alt"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}
