@@ -25,7 +25,7 @@ class GamesController extends AbstractController
             'page' => 1
         ]);
     }
-
+    
     public function findGames($page)
     {
         $first = 1;
@@ -37,9 +37,12 @@ class GamesController extends AbstractController
         }
 
         $games = $this->getDoctrine()->getRepository(Games::class)->findAll();
+        $showGames = [];
+        for ($i=$first; $i <= $second; $i++) { 
+            $showGames[$i] = $games[$i];
+        }
 
-        $games = array_slice($games, $first, $second);
-        return $games;
+        return $showGames;
     }
 
     /**
