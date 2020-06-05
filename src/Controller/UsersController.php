@@ -222,7 +222,7 @@ class UsersController extends AbstractController
 
         $code = $user->getCodes();
         for ($i=0; $i < count($code); $i++) { 
-            $code->setIdUser(null);
+            $code[$i]->setIdUser(null);
         }
 
         $manager->remove($user);

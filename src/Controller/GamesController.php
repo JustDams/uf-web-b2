@@ -264,7 +264,21 @@ class GamesController extends AbstractController
     public function removeGame($id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $manager = $this->getDoctrine()->getManager();
+        $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+        if ($game == null) {
+            return $this->redirectToRoute('admin');
+        }
         
+        $code = $game->getCodes();
+        for ($i=0; $i < count($code); $i++) { 
+            $code[$i]->setIdGame(null);
+        }
+
+        $manager->remove($game);
+        $manager->flush();
+
         return $this->redirectToRoute('admin');
     }
 }
