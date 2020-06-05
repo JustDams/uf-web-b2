@@ -14,15 +14,30 @@
 			{# Games #}
 			<div class="row">
 				{% for g in games %}
-					<div class="col-sm-3 mb-5">
+					<div class="col-md-3 mb-5">
 						<div class="card">
 							<div class="card-body">
 								<h5 class="card-title">{{g.title}}</h5>
-								<h6 class="card-subtitle mb-2 text-muted">{{g.publishers == null ? "Unknown" : g.publishers}}
+								<h6 class="card-subtitle mb-2 text-muted position-relative">
+									{{g.publishers == null ? "Unknown" : g.publishers}}
 									-
-									{{g.releaseYear}}</h6>
+									{{g.releaseYear}}
+								</h6>
+								<div class="card-text">
+									{% if g.console == "Nintendo DS" %}
+										<img class="game-logo" src="{{asset('images/nintendo-ds.svg')}}">
+									{% elseif g.console == "Sony PSP" %}
+										<img class="game-logo" src="{{asset('images/psp.svg')}}">
+									{% elseif g.console == "PlayStation 3" %}
+										<img class="game-logo" src="{{asset('images/ps3.svg')}}">
+									{% elseif g.console == "Nintendo Wii" %}
+										<img class="game-logo" src="{{asset('images/wii.svg')}}">
+									{% elseif g.console == "X360" %}
+										<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+									{% endif %}
+								</div>
 								<img class="card-img game-image" id="dynamicImg{{ g.id }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'"/>
-								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+								<p class="card-text">{{g.description|slice(0,150)}}...</p>
 								{% set genres = g.genres | split(',') %}
 								{% for genre in genres  %}
 									{% if genre == "Racing / Driving" %}
@@ -32,7 +47,7 @@
 									{% endif %}
 								{% endfor %}
 							</div>
-							<a href="{{path('game', {'id' : g.id })}}" class="btn btn-secondary btn-buy">Acheter le jeu</a>
+							<a href="{{path('game', {'id' : g.id})}}" class="btn btn-secondary btn-buy">Learn more</a>
 						</div>
 					</div>
 				{% endfor %}
