@@ -6,6 +6,7 @@ use App\Entity\Code;
 use App\Entity\Comments;
 use App\Entity\Games;
 use App\Form\CommentsFormType;
+use App\Form\GameFromType;
 use App\Form\SearchFormType;
 use App\Repository\GamesRepository\GamesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -167,7 +168,7 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/type/{type}", name="type")
+     * @Route("/genre/{type}", name="type")
      */
     public function type(Request $request, $type)
     {
@@ -183,7 +184,7 @@ class GamesController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        return $this->render('games/type.html.twig', [
+        return $this->render('games/genre.html.twig', [
             'type' => $type,
             'games' => $games,
             'searchform' => $form->createView(),
@@ -218,16 +219,44 @@ class GamesController extends AbstractController
     /**
      * @Route("/createGame", name="createGame")
      */
-    public function createGame()
-    {   
+    public function createGame(Request $request)
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $manager = $this->getDoctrine()->getManager();
+
+        $game = new Games();
+
+        $createForm = $this->createForm(GameFromType::class, $game);
+        $createForm->handleRequest($request);
+
+
+        if ($createForm->isSubmitted() && $createForm->isValid()) {
+            $manager->persist($game);
+            $manager->flush();
+
+            return $this->redirectToRoute('game', [
+                'id' => $game->getId(),
+            ]);
+        }
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+        return $this->render('games/create.html.twig', [
+            'searchform' => $form->createView(),
+            'createForm' => $createForm->createView(), 
+        ]);
     }
-    
+
     /**
      * @Route("/updateGame/{id}", name="updateGame")
      */
-    public function updateGame($id)
-    {      
+    public function updateGame(Request $request, $id)
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
     }
 

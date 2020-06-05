@@ -2,7 +2,9 @@ function loadImage(title, idGame) {
     fetch('https://api.rawg.io/api/games?search="' + title + '"')
         .then(res => res.json())
         .then((out) => {
-            return document.getElementById('dynamicImg' + idGame).src = (out.results[0].background_image);
+            return document.getElementById('dynamicImg' + idGame).src = (
+                out.results[0].background_image == null ? '../images/default.jpg' : out.results[0].background_image
+            );
         }).catch(err => console.error(err))
 }
 
@@ -17,4 +19,3 @@ function function7days() {
         x.style.display = "none";
     }
 }
-
