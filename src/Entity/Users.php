@@ -74,12 +74,12 @@ class Users implements UserInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idUser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idUser")
      */
     private $carts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idUser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idUser")
      */
     private $codes;
 
@@ -269,6 +269,13 @@ class Users implements UserInterface
         return $this;
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Code[]
      */
@@ -296,13 +303,6 @@ class Users implements UserInterface
                 $code->setIdUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
 
         return $this;
     }

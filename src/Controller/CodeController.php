@@ -37,10 +37,9 @@ class CodeController extends AbstractController
         }
     }
 
-    public function sendEmail(Request $request, MailerInterface $mailer, $id, $code)
+    public function sendEmail(Request $request, MailerInterface $mailer, $game, $code)
     {
         $user = $this->getUser();
-        $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
 
         $email = (new Email())
             ->from('noreply@de-weerd.name')

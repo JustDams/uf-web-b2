@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200604123354 extends AbstractMigration
+final class Version20200605215939 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -34,7 +34,7 @@ final class Version20200604123354 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE cart CHANGE id_user_id id_user_id INT DEFAULT NULL, CHANGE id_game_id id_game_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE code CHANGE id_game_id id_game_id INT DEFAULT NULL, CHANGE id_user_id id_user_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE code CHANGE id_user_id id_user_id INT DEFAULT NULL, CHANGE id_game_id id_game_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE games CHANGE stock stock INT DEFAULT NULL');
         $this->addSql('ALTER TABLE users CHANGE roles roles LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_bin`');
     }

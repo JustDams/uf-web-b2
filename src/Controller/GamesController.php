@@ -264,7 +264,7 @@ class GamesController extends AbstractController
     public function removeGame($id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         
+        return $this->redirectToRoute('admin');
     }
 }

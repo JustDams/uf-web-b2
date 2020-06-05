@@ -220,6 +220,11 @@ class UsersController extends AbstractController
             $cart[$i]->getIdGame()->setStock($stock + 1);
         }
 
+        $code = $user->getCodes();
+        for ($i=0; $i < count($code); $i++) { 
+            $code->setIdUser(null);
+        }
+
         $manager->remove($user);
         $manager->flush();
 

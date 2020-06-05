@@ -60,11 +60,6 @@ class Games
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idGame")
-     */
-    private $codes;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -79,11 +74,16 @@ class Games
      */
     private $stock;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idGame")
+     */
+    private $codes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->codes = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->codes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,37 +206,6 @@ class Games
         return $this;
     }
 
-    /**
-     * @return Collection|Code[]
-     */
-    public function getCodes(): Collection
-    {
-        return $this->codes;
-    }
-
-    public function addCode(Code $code): self
-    {
-        if (!$this->codes->contains($code)) {
-            $this->codes[] = $code;
-            $code->setIdGame($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCode(Code $code): self
-    {
-        if ($this->codes->contains($code)) {
-            $this->codes->removeElement($code);
-            // set the owning side to null (unless already changed)
-            if ($code->getIdGame() === $this) {
-                $code->setIdGame(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -288,6 +257,37 @@ class Games
     public function setStock(?int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setIdGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->contains($code)) {
+            $this->codes->removeElement($code);
+            // set the owning side to null (unless already changed)
+            if ($code->getIdGame() === $this) {
+                $code->setIdGame(null);
+            }
+        }
 
         return $this;
     }
