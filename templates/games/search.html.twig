@@ -25,12 +25,14 @@
 								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 								{% set genres = g.genres | split(',') %}
 								{% for genre in genres  %}
-									<div class="badge badge-primary text-wrap" style="width: fit-content;">
-										{{ genre }}
-									</div>
+									{% if genre == "Racing / Driving" %}
+										<a href="{{path('type', {'type': 'Racing'})}}" class="badge badge-primary">{{ genre }}</a>
+									{% else %}
+										<a href="{{path('type', {'type': genre})}}" class="badge badge-primary">{{ genre }}</a>
+									{% endif %}
 								{% endfor %}
 							</div>
-							<a href="#" class="btn btn-secondary btn-buy">Acheter le jeu</a>
+							<a href="{{path('game', {'id' : g.id })}}" class="btn btn-secondary btn-buy">Acheter le jeu</a>
 						</div>
 					</div>
 				{% endfor %}

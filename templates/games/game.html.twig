@@ -147,8 +147,7 @@
 										{{c.title}}
 									</h5>
 									<h6 class="text-muted">Writed by:
-										{{c.idUser.firstname}}
-										{{c.idUser.lastname}}
+										{{c.idUser.username}}
 										{% if user is defined and user is not null %}
 											{% if c.idUser == user or user.roles[0] == 'ROLE_ADMIN' %}
 												<a href="{{path('editComment', {id : c.id})}}">
