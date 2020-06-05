@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class Users implements UserInterface
 {
@@ -36,6 +37,11 @@ class Users implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(name="email", type="string", length=255, unique=true)
@@ -213,7 +219,7 @@ class Users implements UserInterface
 
     public function setRoles(array $roles): self
     {
-        $this->roles=$roles;
+        $this->roles = $roles;
         return $this;
     }
 
@@ -224,7 +230,7 @@ class Users implements UserInterface
 
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->username;
     }
 
     public function eraseCredentials()
@@ -290,6 +296,13 @@ class Users implements UserInterface
                 $code->setIdUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }

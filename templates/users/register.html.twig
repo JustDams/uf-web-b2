@@ -10,6 +10,14 @@
 	<div class="d-flex justify-content-center form-container align-items-center">
 		<div class="border shadow p-3 rounded navbar-bg">
 			{{ form_start(userForm) }}
+			<div class="form-group">
+				{{ form_row(userForm.username, {
+                        'attr' : {
+                            'class' : 'form-control',
+                            'placeholder' : 'Username'
+                        }
+                    })}}
+			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					{{ form_row(userForm.firstname, {

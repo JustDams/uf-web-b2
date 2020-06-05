@@ -22,6 +22,7 @@ class UsersFormType extends AbstractType
         $builder
             ->add('firstname', TextType::class, ['required' => true])
             ->add('lastname', TextType::class, ['required' => true])
+            ->add('username', TextType::class, ['required' => true])
             ->add('email', EmailType::class, ['required' => true])
             ->add('birthday', BirthdayType::class, ['required' => true])
             ->add('password', RepeatedType::class, [

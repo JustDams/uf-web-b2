@@ -66,7 +66,7 @@ class CodeController extends AbstractController
 
             $entityManager->persist($item);
             $entityManager->persist($game);
-            $entityManager->flush();           
+            $entityManager->flush();
         } else {
             $this->addFlash('errors', 'You have to be connected to do that.');
         }

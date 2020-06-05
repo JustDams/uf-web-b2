@@ -174,9 +174,9 @@ class UsersController extends AbstractController
         }
 
         $form = $this->createFormBuilder($user)
+            ->add('username', TextType::class, ['required' => true])
             ->add('firstname', TextType::class, ['required' => true])
             ->add('lastname', TextType::class, ['required' => true])
-            ->add('email', EmailType::class, ['required' => true])
             ->add('email', EmailType::class, ['required' => true])
             ->add('birthday', BirthdayType::class, ['required' => true])
             ->add('balance', MoneyType::class, ['required' => true])
