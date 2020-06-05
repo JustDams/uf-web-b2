@@ -19,6 +19,28 @@ class CodeRepository extends ServiceEntityRepository
         parent::__construct($registry, Code::class);
     }
 
+    public function LastWeekOrders() {
+        $date = date('Y-m-d h:i:s', strtotime("-7 days"));
+
+        return $this->createQueryBuilder('o')
+            ->where('o.purchaseDate BETWEEN :n7days AND :today')
+            ->setParameter('today', date('Y-m-d h:i:s'))
+            ->setParameter('n7days', $date)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function LastWeekPurchases() {
+        $date = date('Y-m-d h:i:s', strtotime("-7 days"));
+
+        return $this->createQueryBuilder('p')
+            ->where('p.price BETWEEN :n7days AND :today')
+            ->setParameter('today', date('Y-m-d h:i:s'))
+            ->setParameter('n7days', $date)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     // /**
     //  * @return Code[] Returns an array of Code objects
     //  */
