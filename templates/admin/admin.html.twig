@@ -7,7 +7,7 @@
 <script src="{{asset('/js/scripts.js')}}"></script>{% endblock %}
 {% block stylesheets %}<link href="{{asset('/css/dashboard.css')}}" type="text/css" rel="stylesheet">{% endblock %}
 {% block body %}
-	<div class="container">
+	<div class="container mb-4">
 
 		<button onclick="function7days()">7 Last Days</button>
 			<div id="recent" class="row">
@@ -157,7 +157,7 @@
 								}}
 								{{ form_widget(formGames.submit , {
 									'attr': {
-										'class' : 'btn btn-light my-2 my-sm-0',
+										'class' : 'btn btn-secondary my-2 my-sm-0',
 										'label' : 'Search'
 									}
 								})
@@ -166,45 +166,45 @@
 							</div>
 							<table class="align-middle mb-0 table table-borderless table-striped table-hover">
 								<thead>
-								<tr>
-									<th class="text-center" scope="col">Id</th>
-									<th scope="col">title</th>
-									<th class="text-center" scope="col">Publishers</th>
-									<th class="text-center" scope="col">Price</th>
-									<th class="text-center" scope="col">Console</th>
-									<th class="text-center" scope="col">Actions</th>
-								</tr>
+									<tr>
+										<th class="text-center" scope="col">Id</th>
+										<th scope="col">title</th>
+										<th class="text-center" scope="col">Publishers</th>
+										<th class="text-center" scope="col">Price</th>
+										<th class="text-center" scope="col">Console</th>
+										<th class="text-center" scope="col">Actions</th>
+									</tr>
 								</thead>
 								<tbody>
-								{% for g in games %}
-									<tr>
-										<td class="text-center text-muted">{{g.id}}</td>
-										<td>
-											<div class="">
+									{% for g in games %}
+										<tr>
+											<td class="text-center text-muted">{{g.id}}</td>
+											<td>
 												<div class="">
 													<div class="">
-														<div class="widget-heading">{{ g.title }} </div>
+														<div class="">
+															<div class="widget-heading">{{ g.title }} </div>
+														</div>
 													</div>
 												</div>
-											</div>
-										</td>
-										<td class="text-center">{{ g.publishers }}</td>
-										<td class="text-center">
-											<div class="badge badge-warning">{{ g.price }}$</div>
-										</td>
-										<td class="text-center">{{ g.console }}</td>
-										<td class="text-center">
-											<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
-											<a href=""><i class="fas fa-pencil-alt"></i></a>
-										</td>
-									</tr>
-								{% endfor %}
-								</tbody>
-							</table>
+											</td>
+											<td class="text-center">{{ g.publishers }}</td>
+											<td class="text-center">
+												<div class="badge badge-warning">{{ g.price }}$</div>
+											</td>
+											<td class="text-center">{{ g.console }}</td>
+											<td class="text-center">
+												<a href="" class="mx-2"><i class="fas fa-trash"></i></a>
+												<a href=""><i class="fas fa-pencil-alt"></i></a>
+											</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 {% endblock %}

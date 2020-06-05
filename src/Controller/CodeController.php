@@ -51,13 +51,22 @@ class CodeController extends AbstractController
 
         if ($user != null) {
             $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+            $stock = $game->getStock();
+            if ($stock < 1) {
+                $this->addFlash('errors', 'The stock is empty for this game, come back later.');
+                return $this->redirectToRoute('game', [
+                    'id' => $id
+                ]);
+            }
             $item = new Cart();
 
+            $game->setStock($stock - 1);
             $item->setIdUser($user);
             $item->setIdGame($game);
 
             $entityManager->persist($item);
-            $entityManager->flush();
+            $entityManager->persist($game);
+            $entityManager->flush();           
         } else {
             $this->addFlash('errors', 'You have to be connected to do that.');
         }
@@ -111,7 +120,7 @@ class CodeController extends AbstractController
         if ($formMoney->isSubmitted() && $formMoney->isValid()) {
             $addBalance = $formMoney->getData()['balance'];
             if ($addBalance <= 0) {
-                $this->addFlash('errors','This value is not valid.');
+                $this->addFlash('errors', 'This value is not valid.');
                 return $this->redirectToRoute('cart');
             }
             $user->setBalance($balance + $addBalance);
@@ -141,6 +150,11 @@ class CodeController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $item = $manager->find(Cart::class, $id);
             if ($item != null) {
+                $game = $item->getIdGame();
+                $stock = $game->getStock();
+                $game->setStock($stock + 1);
+                
+                $manager->persist($game);
                 $manager->remove($item);
                 $manager->flush();
             }
