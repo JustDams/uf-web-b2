@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Code;
+use App\Entity\Comments;
 use App\Entity\Roles;
 use App\Entity\Users;
 use App\Form\SearchFormType;
 use App\Form\UsersFormType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use http\Env\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
@@ -164,6 +167,7 @@ class UsersController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
+        $comments = $this->getDoctrine()->getRepository(Comments::class)->findBy( ['idUser' => $user -> getId()]);
 
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($request);
@@ -192,6 +196,7 @@ class UsersController extends AbstractController
 
         return $this->render('users/edit.html.twig', [
             'user' => $user,
+            'comments' => $comments,
             'searchform' => $searchForm->createView(),
             'userForm' => $form->createView()
         ]);

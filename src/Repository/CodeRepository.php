@@ -34,7 +34,7 @@ class CodeRepository extends ServiceEntityRepository
         $date = date('Y-m-d h:i:s', strtotime("-7 days"));
 
         return $this->createQueryBuilder('p')
-            ->where('p.price BETWEEN :n7days AND :today')
+            ->where('p.purchaseDate BETWEEN :n7days AND :today')
             ->setParameter('today', date('Y-m-d h:i:s'))
             ->setParameter('n7days', $date)
             ->getQuery()

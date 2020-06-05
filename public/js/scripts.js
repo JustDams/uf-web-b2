@@ -17,3 +17,4 @@ function function7days() {
         x.style.display = "none";
     }
 }
+

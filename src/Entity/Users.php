@@ -39,7 +39,7 @@ class Users implements UserInterface
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     private $username;
 
