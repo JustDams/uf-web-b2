@@ -68,12 +68,10 @@ class AdminController extends AbstractController
         $LastWeekOrders = $this->getDoctrine()->getRepository(Code::class)->LastWeekOrders();
         $purchase = 0;
         $purchase7 = $LastWeekOrders;
-        $it = 0;
 
         for ($i=0; $i < count($allPurchases); $i++) {
             $purchase += $allPurchases[$i]->getPrice();
         }
-
 
         $allOrders = $this->getDoctrine()->getRepository(Code::class)->findAll();
 
@@ -100,7 +98,6 @@ class AdminController extends AbstractController
             $role = $user->getRoles();
             if ($role[0] == 'ROLE_ADMIN') {
                 return $this->render('admin/admin.html.twig', [
-                    'it' => $it,
                     'purchase7' => $purchase7,
                     'order7' => $order7,
                     'stock' => $stock,
