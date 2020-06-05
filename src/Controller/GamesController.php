@@ -26,6 +26,22 @@ class GamesController extends AbstractController
         ]);
     }
 
+    public function findGames($page)
+    {
+        $first = 1;
+        $second = 20;
+
+        if ($page > 1) {
+            $first += (20 * ($page - 1));
+            $second += (20 * ($page - 1));
+        }
+
+        $games = $this->getDoctrine()->getRepository(Games::class)->findAll();
+
+        $games = array_slice($games, $first, $second);
+        return $games;
+    }
+
     /**
      * @Route("/index/{page}", name="index")
      */
@@ -37,15 +53,11 @@ class GamesController extends AbstractController
             return $this->redirectToRoute('index', ['page' => 1]);
         }
 
-        $games = $this->getDoctrine()
-            ->getRepository(Games::class)
-            ->findGames($page);
+        $games = $this->findGames($page);
 
         $pagesLen = [];
         for ($i = $page + 1; $i < $page + 3; $i++) {
-            $pageLen = $this->getDoctrine()
-                ->getRepository(Games::class)
-                ->findGames($i);
+            $pageLen = $this->findGames($i);
             array_push($pagesLen, count($pageLen));
         }
 

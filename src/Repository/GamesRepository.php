@@ -35,25 +35,8 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findGames($page)
+    public function search10LastGames()
     {
-        $first = 1;
-        $second = 20;
-
-        if ($page > 1) {
-            $first += (20 * ($page - 1));
-            $second += (20 * ($page - 1));
-        }
-        return $this->createQueryBuilder('g')
-            ->where('g.id >= ?1')
-            ->andWhere('g.id <= ?2')
-            ->setParameter(1, $first)
-            ->setParameter(2, $second)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function search10LastGames() {
         return $this->createQueryBuilder('t')
             ->orderBy("t.releaseYear", "desc")
             ->setMaxResults(10)
@@ -69,10 +52,11 @@ class GamesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findGamesByString($str){
+    public function findGamesByString($str)
+    {
         return $this->createQueryBuilder('g')
             ->where('g.title LIKE :str')
-            ->setParameter('str', '%'.$str.'%')
+            ->setParameter('str', '%' . $str . '%')
             ->getQuery()
             ->getResult();
     }
