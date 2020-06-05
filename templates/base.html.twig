@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> {% block stylesheets %}{% endblock %}
 		</head>
 		<body>
-			<header class="fixed-top shadow">
+			<header class="fixed-top {{app.request.attributes.get('_route') == 'admin' ? : 'shadow' }}">
 				<nav class="navbar navbar-expand-lg navbar-dark navbar-bg">
 					<a class="navbar-brand d-flex flex-row justify-content-center align-items-center p-0" href="{{path('index', {'page' : 1})}}">
 						<i class="fas fa-gamepad fa-2x mr-2"></i>GameDestock
@@ -31,7 +31,7 @@
 							</li>
 
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle {{ app.request.attributes.get('_route') == 'profile' or app.request.attributes.get('_route') == 'login' or app.request.attributes.get('_route') == 'register' ? 'active' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a class="nav-link dropdown-toggle {{ app.request.attributes.get('_route') == 'profile' or app.request.attributes.get('_route') == 'login' or app.request.attributes.get('_route') == 'register' or app.request.attributes.get('_route') == 'admin' ? 'active' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Account
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
