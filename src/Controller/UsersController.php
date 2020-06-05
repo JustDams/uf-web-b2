@@ -202,6 +202,22 @@ class UsersController extends AbstractController
      */
     public function removeUser($id)
     {
-        //test
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
+        if ($user == null) {
+            $this->addFlash('errors', 'This user doesn\'t exist');
+            return $this->redirectToRoute('admin');
+        }
+        $manager = $this->getDoctrine()->getManager();
+        $cart = $user->getCarts();
+        for ($i=0; $i < count($cart); $i++) {
+            $stock = $cart[$i]->getIdGame()->getStock();
+            $cart[$i]->getIdGame()->setStock($stock + 1);
+        }
+
+        $manager->remove($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin');
     }
 }

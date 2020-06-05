@@ -74,12 +74,12 @@ class Users implements UserInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idUser")
+     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="idUser", orphanRemoval=true)
      */
     private $carts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idUser")
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="idUser", orphanRemoval=true)
      */
     private $codes;
 

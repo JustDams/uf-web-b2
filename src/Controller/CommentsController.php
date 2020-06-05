@@ -59,4 +59,27 @@ class CommentsController extends AbstractController
             'user' => $user,
         ]);
     }
+
+     /**
+     * @Route("/removeComment/{id}", name="removeComment")
+     */
+    public function removeComment($id) {
+        $user = $this->getUser();
+        $comment = $this->getDoctrine()->getRepository(Comments::class)->find($id);
+
+        if($comment == null) {
+            return $this->redirectToRoute('index');
+        } else if ($comment->getIdUser() != $user and $user->getRoles()[0] != "ROLE_ADMIN") {
+            return $this->redirectToRoute('index');
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($comment);
+        $manager->flush();
+
+        return $this->redirectToRoute('game', [
+            'id' => $comment->getIdGame()->getId()
+        ]);
+    }
 }
