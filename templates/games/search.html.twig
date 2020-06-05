@@ -34,6 +34,9 @@
 										<img class="game-logo" src="{{asset('images/wii.svg')}}">
 									{% elseif g.console == "X360" %}
 										<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+									{% else %}
+										Console:
+										{{g.console}}
 									{% endif %}
 								</div>
 								<img class="card-img game-image" id="dynamicImg{{ g.id }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'"/>

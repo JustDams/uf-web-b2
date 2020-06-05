@@ -112,13 +112,13 @@ class GamesController extends AbstractController
                 'idUser' => $userId
             ]);
         }
-        
+
         if ($canComment != null) {
             $canComment = True;
         } else {
             $canComment = False;
         }
-        
+
 
         $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
         $comments = $this->getDoctrine()->getRepository(Comments::class)->findBy([
@@ -213,5 +213,29 @@ class GamesController extends AbstractController
             'searchform' => $form->createView(),
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/createGame", name="createGame")
+     */
+    public function createGame()
+    {   
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    }
+    
+    /**
+     * @Route("/updateGame/{id}", name="updateGame")
+     */
+    public function updateGame($id)
+    {      
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    }
+
+    /**
+     * @Route("/removeGame/{id}", name="removeGame")
+     */
+    public function removeGame($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
     }
 }

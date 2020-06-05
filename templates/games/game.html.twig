@@ -51,6 +51,8 @@
 							<img class="game-logo" src="{{asset('images/wii.svg')}}">
 						{% elseif game.console == "X360" %}
 							<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+						{% else %}
+							Console: {{game.console}}
 						{% endif %}
 					</div>
 					<p class="card-text">{{game.description}}</p>
