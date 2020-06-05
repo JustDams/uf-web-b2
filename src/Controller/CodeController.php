@@ -25,7 +25,16 @@ class CodeController extends AbstractController
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        return $randomString;
+
+        $code = $this->getDoctrine()->getRepository(Code::class)->findBy([
+            'code' => $randomString
+        ]);
+
+        if(count($code) > 0){
+            $this->generateCode();
+        } else {
+            return $randomString;
+        }
     }
 
     public function sendEmail(Request $request, MailerInterface $mailer, $id, $code)
@@ -204,8 +213,9 @@ class CodeController extends AbstractController
 
                 $manager->remove($carts[$i]);
             }
-            $manager->flush();
 
+            $manager->flush();
+            
             $this->addFlash('success', 'You\'ll receive the activation(s) code(s) on your email.');
             return $this->redirectToRoute('cart');
         } else {

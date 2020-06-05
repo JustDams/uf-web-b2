@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex justify-content-center form-container align-items-center">
+	<div class="d-flex justify-content-center form-container align-items-center" style="color: white;">
 		<div class="border shadow p-3 rounded navbar-bg">
 			{{form_start(createForm)}}
 			<div class="form-group">
@@ -91,8 +91,8 @@
 			{{ form_row(createForm.create, {
 				'attr' : {
 					'class' : 'form-control',
-					'value' : 'Create'
-				}
+				},
+				'label' : id == null ? 'Create' : 'Update'
 			})}}
 			{{form_end(createForm)}}
 		</div>

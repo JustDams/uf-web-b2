@@ -23,7 +23,10 @@ class GameFromType extends AbstractType
             ->add('genres', TextType::class, ['required' => true])
             ->add('publishers', TextType::class, ['required' => true])
             ->add('review_score', NumberType::class, ['required' => true])
-            ->add('price', MoneyType::class, ['required' => true])
+            ->add('price', MoneyType::class, [
+                'required' => true,
+                'currency' => 'USD',
+            ])
             ->add('console', TextType::class, ['required' => true])
             ->add('releaseYear', NumberType::class, ['required' => true])
             ->add('description', TextareaType::class, ['required' => true])

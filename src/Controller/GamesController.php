@@ -217,14 +217,19 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/createGame", name="createGame")
+     * @Route("/actionGame/{id}", name="actionGame")
      */
-    public function createGame(Request $request)
+    public function createGame(Request $request, $id = null)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $manager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
-        $game = new Games();
+        if ($id != null) {
+            $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+        } else {
+            $game = new Games();
+        }
 
         $createForm = $this->createForm(GameFromType::class, $game);
         $createForm->handleRequest($request);
@@ -234,9 +239,7 @@ class GamesController extends AbstractController
             $manager->persist($game);
             $manager->flush();
 
-            return $this->redirectToRoute('game', [
-                'id' => $game->getId(),
-            ]);
+            return $this->redirectToRoute('admin');
         }
 
         $form = $this->createForm(SearchFormType::class);
@@ -246,18 +249,13 @@ class GamesController extends AbstractController
             $data = $form->getData()->getTitle();
             return $this->redirectToRoute('search', ['game' => $data]);
         }
-        return $this->render('games/create.html.twig', [
-            'searchform' => $form->createView(),
-            'createForm' => $createForm->createView(), 
-        ]);
-    }
 
-    /**
-     * @Route("/updateGame/{id}", name="updateGame")
-     */
-    public function updateGame(Request $request, $id)
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('games/action.html.twig', [
+            'id' => $id,
+            'searchform' => $form->createView(),
+            'createForm' => $createForm->createView(),
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -266,5 +264,7 @@ class GamesController extends AbstractController
     public function removeGame($id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        
     }
 }
