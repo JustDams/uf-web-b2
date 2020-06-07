@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title of the PDF</title>
+</head>
+<body>
+<h1>FACTURE</h1>
+<div>
+    <h2>{{ user.firstname | capitalize }} {{ user.lastname | capitalize }}</h2>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th class="text-left">Titre</th>
+        <th class="text-center">Quantité</th>
+        <th class="text-center">Prix</th>
+        <th class="text-right">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set i = 0 %}
+        {% for g in games %}
+            <tr>
+                <td>{{ g.title }}</td>
+                <td>{{ gamesArray[i] }}</td>
+                <td>{{ g.price }}</td>
+                <td>€</td>
+            </tr>
+        {% set i = i + 1 %}
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ totalPrice }}€</td>
+    </tr>
+    </tbody>
+</table>
+    {% for x in gamesArray %}
+        {{ x }}
+    {% endfor %}
+</body>
+</html>

@@ -6,10 +6,12 @@ use App\Entity\Games;
 use App\Entity\Users;
 use App\Entity\Code;
 use App\Form\SearchFormType;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -38,7 +40,7 @@ class AdminController extends AbstractController
         $formGames->handleRequest($request);
 
         if ($formGames->isSubmitted() && $formGames->isValid()) {
-            $gameTitle=$formGames->get('game')->getData();
+            $gameTitle = $formGames->get('game')->getData();
             $games = $this->getDoctrine()
                 ->getRepository(Games::class)
                 ->findGamesByString($gameTitle);
@@ -51,7 +53,7 @@ class AdminController extends AbstractController
         $formUsers->handleRequest($request);
 
         if ($formUsers->isSubmitted() && $formUsers->isValid()) {
-            $userName=$formUsers->get('name')->getData();
+            $userName = $formUsers->get('name')->getData();
             $users = $this->getDoctrine()
                 ->getRepository(Users::class)
                 ->findUsersByString($userName);
@@ -60,7 +62,7 @@ class AdminController extends AbstractController
         $allGames = $this->getDoctrine()->getRepository(Games::class)->findAll();
         $stock = 0;
 
-        for ($i=0; $i < count($allGames); $i++) {
+        for ($i = 0; $i < count($allGames); $i++) {
             $stock += $allGames[$i]->getStock();
         }
 
@@ -69,7 +71,7 @@ class AdminController extends AbstractController
         $purchase = 0;
         $purchase7 = $LastWeekOrders;
 
-        for ($i=0; $i < count($allPurchases); $i++) {
+        for ($i = 0; $i < count($allPurchases); $i++) {
             $purchase += $allPurchases[$i]->getPrice();
         }
 
@@ -118,6 +120,4 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('index');
         }
     }
-
-
 }
