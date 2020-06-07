@@ -48,7 +48,7 @@ class AdminController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = $this->getUser();
 
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAll();
+        $allUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
 
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
@@ -137,6 +137,7 @@ class AdminController extends AbstractController
                     'user' => $user,
                     'role' => $role,
                     'users' => $users,
+                    'allUsers' => $allUsers,
                     'code' => $code,
                     'formCode' => $formCode->createView(),
                     'searchform' => $searchForm->createView(),
