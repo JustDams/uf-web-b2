@@ -208,7 +208,7 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/esport", name="esport")
+     * @Route("/speedrun", name="esport")
      */
     public function esport(Request $request)
     {

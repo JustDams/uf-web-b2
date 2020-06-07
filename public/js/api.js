@@ -32,7 +32,7 @@ function createCardGame(game) {
 
     let cardSubtitle = document.createElement('h6')
     cardSubtitle.className = "card-subtitle mb-2 text-muted position-relative"
-    cardSubtitle.appendChild(document.createTextNode("Unknown - " + game.created.substring(0, 4)))
+    cardSubtitle.appendChild(document.createTextNode("Unknown - " + (game.created !== null ? game.created.substring(0, 4) : 'Unknown')))
 
     let img = new Image()
     img.className = "card-img game-image"
@@ -84,15 +84,26 @@ function createPagination(page, offset) {
         document.getElementById('pagination').appendChild(li)
 
     } else if (page.rel == "next") {
+        liPage = document.createElement('li')
+        liPage.className = "page-item active"
+        aPage = document.createElement('a')
+        aPage.className = "page-link"
+        spanPage = document.createElement('span')
+        spanPage = document.createTextNode((offset / 20) + 1)
+
+        aPage.appendChild(spanPage)
+        liPage.appendChild(aPage)
+
         li.className = "page-item"
         a.className = "page-link"
         a.href = "?offset=" + (offset + 20)
         span.idName = "next"
         span.appendChild(document.createTextNode("»"))
 
-        li.appendChild(a)
         a.appendChild(span)
+        li.appendChild(a)
 
+        document.getElementById('pagination').appendChild(liPage)
         document.getElementById('pagination').appendChild(li)
     }
 }
