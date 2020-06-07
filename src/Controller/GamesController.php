@@ -6,6 +6,7 @@ use App\Entity\Code;
 use App\Entity\Comments;
 use App\Entity\Games;
 use App\Form\CommentsFormType;
+use App\Form\GameFromType;
 use App\Form\SearchFormType;
 use App\Repository\GamesRepository\GamesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,25 @@ class GamesController extends AbstractController
             'page' => 1
         ]);
     }
+    
+    public function findGames($page)
+    {
+        $first = 1;
+        $second = 20;
+
+        if ($page > 1) {
+            $first += (20 * ($page - 1));
+            $second += (20 * ($page - 1));
+        }
+
+        $games = $this->getDoctrine()->getRepository(Games::class)->findAll();
+        $showGames = [];
+        for ($i=$first; $i <= $second; $i++) { 
+            $showGames[$i] = $games[$i];
+        }
+
+        return $showGames;
+    }
 
     /**
      * @Route("/index/{page}", name="index")
@@ -36,15 +56,11 @@ class GamesController extends AbstractController
             return $this->redirectToRoute('index', ['page' => 1]);
         }
 
-        $games = $this->getDoctrine()
-            ->getRepository(Games::class)
-            ->findGames($page);
+        $games = $this->findGames($page);
 
         $pagesLen = [];
         for ($i = $page + 1; $i < $page + 3; $i++) {
-            $pageLen = $this->getDoctrine()
-                ->getRepository(Games::class)
-                ->findGames($i);
+            $pageLen = $this->findGames($i);
             array_push($pagesLen, count($pageLen));
         }
 
@@ -167,7 +183,7 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/type/{type}", name="type")
+     * @Route("/genre/{type}", name="type")
      */
     public function type(Request $request, $type)
     {
@@ -183,7 +199,7 @@ class GamesController extends AbstractController
             return $this->redirectToRoute('search', ['game' => $data]);
         }
 
-        return $this->render('games/type.html.twig', [
+        return $this->render('games/genre.html.twig', [
             'type' => $type,
             'games' => $games,
             'searchform' => $form->createView(),
@@ -216,19 +232,45 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/createGame", name="createGame")
+     * @Route("/actionGame/{id}", name="actionGame")
      */
-    public function createGame()
-    {   
+    public function createGame(Request $request, $id = null)
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-    }
-    
-    /**
-     * @Route("/updateGame/{id}", name="updateGame")
-     */
-    public function updateGame($id)
-    {      
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $manager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        if ($id != null) {
+            $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+        } else {
+            $game = new Games();
+        }
+
+        $createForm = $this->createForm(GameFromType::class, $game);
+        $createForm->handleRequest($request);
+
+
+        if ($createForm->isSubmitted() && $createForm->isValid()) {
+            $manager->persist($game);
+            $manager->flush();
+
+            return $this->redirectToRoute('admin');
+        }
+
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()->getTitle();
+            return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        return $this->render('games/action.html.twig', [
+            'id' => $id,
+            'searchform' => $form->createView(),
+            'createForm' => $createForm->createView(),
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -237,5 +279,21 @@ class GamesController extends AbstractController
     public function removeGame($id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $manager = $this->getDoctrine()->getManager();
+        $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+        if ($game == null) {
+            return $this->redirectToRoute('admin');
+        }
+        
+        $code = $game->getCodes();
+        for ($i=0; $i < count($code); $i++) { 
+            $code[$i]->setIdGame(null);
+        }
+
+        $manager->remove($game);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin');
     }
 }

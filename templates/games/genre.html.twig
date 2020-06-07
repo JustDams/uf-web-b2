@@ -35,15 +35,18 @@
 										<img class="game-logo" src="{{asset('images/wii.svg')}}">
 									{% elseif g.console == "X360" %}
 										<img class="mb-2" style="width: 78px;" src="{{asset('images/xbox.svg')}}">
+									{% else %}
+										Console:
+										{{g.console}}
 									{% endif %}
 								</div>
 								<img class="card-img game-image" id="dynamicImg{{ g.id }}" src="" onerror="this.src='{{asset('/images/default.jpg')}}'"/>
-								<p class="card-text">{{g.description}}.</p>
+								<p class="card-text">{{g.description|slice(0,150)}}...</p>
 								{% set genres = g.genres | split(',') %}
 								{% for genre in genres  %}
 									{% if genre == "Racing / Driving" %}
 										<a href="{{path('type', {'type': 'Racing'})}}" class="badge badge-primary">{{ genre }}</a>
-                                    {% else %}
+									{% else %}
 										<a href="{{path('type', {'type': genre})}}" class="badge badge-primary">{{ genre }}</a>
 									{% endif %}
 								{% endfor %}

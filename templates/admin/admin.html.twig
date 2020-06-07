@@ -1,238 +1,289 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Admin
+	Admin
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('/js/scripts.js') }}"></script>
+	<script src="{{ asset('/js/scripts.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}
-    <link href="{{ asset('/css/dashboard.css') }}" type="text/css" rel="stylesheet">
+	<link href="{{ asset('/css/dashboard.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block body %}
-    <div class="container mb-4">
-        <div>
-            <label class="switch">
-                <input onclick="function7days()" type="checkbox">
-                <span class="slider round"></span>
-            </label>
-            <div id="recent" class="row">
-                <div class="col-md-6 col-xl-4">
-                    <div class="widget-height card mb-3 widget-content bg-midnight-bloom">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Total Orders</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-white">
-                                    <span>{{ order }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                    <div class="widget-height card mb-3 widget-content bg-arielle-smile">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Clients</div>
-                                <div class="widget-subheading">Total Clients Profit</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-white">
-								<span>
-									${{ purchase }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                    <div class="widget-height card mb-3 widget-content bg-grow-early">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Games</div>
-                                <div class="widget-subheading">Total Games' Stock</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-white">
-                                    <span>{{ stock }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="7days" class="row" style="display: none">
-                <div class="col-md-6 col-xl-4">
-                    <div class="widget-height card mb-3 widget-content bg-midnight-bloom">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Total Orders</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-white">
-                                    <span>{{ order7 }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                    <div class="widget-height card mb-3 widget-content bg-arielle-smile">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Clients</div>
-                                <div class="widget-subheading">Total Clients Profit</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-white">
-								<span>
-									{% set sum = 0 %}
-                                    {% for p in purchase7 %}
-                                        {% set sum = sum + p.price %}
-                                    {% endfor %}
-									${{ sum }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h1 class="title my-4">All Users</h1>
-            <div class="col-md-12">
-                <div class="main-card mb-3 card">
-                    <div class="table-responsive">
-                        <div class="table-responsive">
-                            <div class="form-inline my-2 my-lg-0">
-                                {{ form_start(formUsers) }}
-                                {{ form_widget(formUsers.name , {
+	<div class="container mb-4">
+		<div>
+			<label class="switch">
+				<input onclick="function7days()" type="checkbox">
+				<span class="slider round"></span>
+			</label>
+			<div id="recent" class="row">
+				<div class="col-md-6 col-xl-4">
+					<div class="widget-height card mb-3 widget-content bg-midnight-bloom">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">Total Orders</div>
+							</div>
+							<div class="widget-content-right">
+								<div class="widget-numbers text-white">
+									<span>{{ order }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-4">
+					<div class="widget-height card mb-3 widget-content bg-arielle-smile">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">Clients</div>
+								<div class="widget-subheading">Total Clients Profit</div>
+							</div>
+							<div class="widget-content-right">
+								<div class="widget-numbers text-white">
+									<span>
+										${{ purchase }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-4">
+					<div class="widget-height card mb-3 widget-content bg-grow-early">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">Games</div>
+								<div class="widget-subheading">Total Games' Stock</div>
+							</div>
+							<div class="widget-content-right">
+								<div class="widget-numbers text-white">
+									<span>{{ stock }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="7days" class="row" style="display: none">
+				<div class="col-md-6 col-xl-4">
+					<div class="widget-height card mb-3 widget-content bg-midnight-bloom">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">Total Orders</div>
+							</div>
+							<div class="widget-content-right">
+								<div class="widget-numbers text-white">
+									<span>{{ order7 }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-4">
+					<div class="widget-height card mb-3 widget-content bg-arielle-smile">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">Clients</div>
+								<div class="widget-subheading">Total Clients Profit</div>
+							</div>
+							<div class="widget-content-right">
+								<div class="widget-numbers text-white">
+									<span>
+										{% set sum = 0 %}
+										{% for p in purchase7 %}
+											{% set sum = sum + p.price %}
+										{% endfor %}
+										${{ sum }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h1 class="title my-4">All Users</h1>
+			<div class="col-md-12">
+				<div class="main-card mb-3 card">
+					<div class="table-responsive">
+						<div class="table-responsive">
+							<div class="form-inline my-2 my-lg-0">
+								{{ form_start(formUsers) }}
+								{{ form_widget(formUsers.name , {
                                     'attr': {
                                         'class' : 'form-control my-2 mx-2 mr-sm-2',
                                         'placeholder' : 'Search...'
                                     }
                                 }) }}
-                                {{ form_widget(formUsers.submit , {
+								{{ form_widget(formUsers.submit , {
                                     'attr': {
                                         'class' : 'btn btn-light my-2 my-sm-0',
                                         'label' : 'Search'
                                     }
                                 }) }}
-                                {{ form_end(formUsers) }}
-                            </div>
-                            <table class="align-middle mb-0 table table-borderless table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="text-center" scope="col">Id</th>
-                                    <th scope="col">Name</th>
-                                    <th class="text-center" scope="col">Birthday</th>
-                                    <th class="text-center" scope="col">Balance</th>
-                                    <th class="text-center" scope="col">Register Date</th>
-                                    <th class="text-center" scope="col">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for u in users %}
-                                    <tr>
-                                        <td class="text-center text-muted">{{ u.id }}</td>
-                                        <td>
-                                            <div class="">
-                                                <div class="">
-                                                    <div class="">
-                                                        <div class="">
-                                                            <div class="">
-                                                                <div class="widget-heading">{{ u.firstname }}
-                                                                    {{ u.lastname }}</div>
-                                                                <div class="">{{ u.email }}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">{{ u.birthday | date('m/d/Y') }}</td>
-                                        <td class="text-center">
-                                            <div class="badge badge-warning">{{ u.balance }}$</div>
-                                        </td>
-                                        <td class="text-center">{{ u.registerdate | date('m/d/Y') }}</td>
-                                        <td class="text-center">
-                                            <a href="{{ path('removeUser', {'id' : u.id}) }}" class="mx-2"><i class="fas fa-trash"></i></a>
-                                            <a href="{{ path('editUser', {'id' : u.id}) }}"><i
-                                                        class="fas fa-pencil-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h1 class="title my-4">All Games</h1>
-            <div class="col-md-12">
-                <div class="main-card mb-3 card">
-                    <div class="table-responsive">
-                        <div class="form-inline my-2 my-lg-0">
-                            {{ form_start(formGames) }}
-                            {{ form_widget(formGames.game , {
+								{{ form_end(formUsers) }}
+							</div>
+							<table class="align-middle mb-0 table table-borderless table-striped table-hover">
+								<thead>
+									<tr>
+										<th class="text-center" scope="col">Id</th>
+										<th class="d-flex" scope="col">
+											<span class="widget-heading mr-2">Name</span>
+											<span class="">email</span>
+										</th>
+										<th class="text-center" scope="col">Birthday</th>
+										<th class="text-center" scope="col">Balance</th>
+										<th class="text-center" scope="col">Register Date</th>
+										<th class="text-center" scope="col">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for u in users %}
+										<tr>
+											<td class="text-center text-muted">{{ u.id }}</td>
+											<td class="d-flex flex-column">
+												<span class="widget-heading">{{ u.firstname }}
+													{{ u.lastname }}</span>
+												<span class="">{{ u.email }}</span>
+											</td>
+											<td class="text-center">{{ u.birthday | date('m/d/Y') }}</td>
+											<td class="text-center">
+												<div class="badge badge-warning">{{ u.balance }}$</div>
+											</td>
+											<td class="text-center">{{ u.registerdate | date('m/d/Y') }}</td>
+											<td class="text-center">
+												<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modal{{u.id}}">
+													<i class="fas fa-trash"></i>
+												</a>
+												<a href="{{ path('editUser', {'id' : u.id}) }}">
+													<i class="fas fa-pencil-alt"></i>
+												</a>
+											</td>
+										</tr>
+										<div class="modal fade" id="modal{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														You are going to delete the user:
+														<div class="widget-heading">{{ u.firstname }}
+															{{ u.lastname }}</div>
+														<div class="">{{ u.email }}</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+														<a href="{{path('removeUser', {'id' : u.id })}}" role="button" class="btn btn-primary">Delete</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h1 class="title my-4">All Games</h1>
+			<div class="col-md-12">
+				<div class="main-card mb-3 card">
+					<div class="table-responsive">
+						<div class="form-inline my-2 my-lg-0 d-flex justify-content-between">
+							{{ form_start(formGames) }}
+							{{ form_widget(formGames.game , {
                                 'attr': {
                                     'class' : 'form-control my-2 mx-2 mr-sm-2',
                                     'placeholder' : 'Search...'
                                 }
                             }) }}
-                            {{ form_widget(formGames.submit , {
+							{{ form_widget(formGames.submit , {
                                 'attr': {
                                     'class' : 'btn btn-secondary my-2 my-sm-0',
                                     'label' : 'Search'
                                 }
                             }) }}
-                            {{ form_end(formGames) }}
-                        </div>
-                        <table class="align-middle mb-0 table table-borderless table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th class="text-center" scope="col">Id</th>
-                                <th scope="col">title</th>
-                                <th class="text-center" scope="col">Publishers</th>
-                                <th class="text-center" scope="col">Price</th>
-                                <th class="text-center" scope="col">Console</th>
-                                <th class="text-center" scope="col">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for g in games %}
-                                <tr>
-                                    <td class="text-center text-muted">{{ g.id }}</td>
-                                    <td>
-                                        <div class="">
-                                            <div class="">
-                                                <div class="">
-                                                    <div class="widget-heading">{{ g.title }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">{{ g.publishers }}</td>
-                                    <td class="text-center">
-                                        <div class="badge badge-warning">{{ g.price }}$</div>
-                                    </td>
-                                    <td class="text-center">{{ g.console }}</td>
-                                    <td class="text-center">
-                                        <a href="" class="mx-2"><i class="fas fa-trash"></i></a>
-                                        <a href=""><i class="fas fa-pencil-alt"></i></a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							{{ form_end(formGames) }}
+							<a href="{{path('actionGame')}}" class="btn btn-primary mx-2" role="button">
+								<i class="fas fa-plus"></i>
+							</a>
+						</div>
+						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="text-center" scope="col">Id</th>
+									<th scope="col">Title</th>
+									<th class="text-center" scope="col">Genres</th>
+									<th class="text-center" scope="col">Publishers</th>
+									<th class="text-center" scope="col">Console</th>
+									<th class="text-center" scope="col">Price</th>
+									<th class="text-center" scope="col">Stock</th>
+									<th class="text-center" scope="col">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for g in games %}
+									<tr>
+										<td class="text-center text-muted">{{ g.id }}</td>
+										<td class="widget-heading">
+											<a href="{{path('game', {'id': g.id})}}" role="button" class="mx-2">
+												{{ g.title }}
+											</a>
+										</td>
+										<td class="text-center">{{ g.genres|slice(0,10) }}{{g.genres| length > 10 ? ".." : ""}}</td>
+										<td class="text-center">{{ g.publishers }}</td>
+										<td class="text-center">{{ g.console }}</td>
+										<td class="text-center">
+											<span class="badge badge-warning">{{ g.price }}$</span>
+										</td>
+										<td class="text-center">{{ g.stock }}</td>
+										<td class="text-center">
+											<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modalGame{{g.id}}">
+												<i class="fas fa-trash"></i>
+											</a>
+											<a href="{{path('actionGame', { 'id' : g.id })}}">
+												<i class="fas fa-pencil-alt"></i>
+											</a>
+										</td>
+									</tr>
+									<div class="modal fade" id="modalGame{{g.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="mb-2">You are going to delete the game:</div>
+													<div class="widget-heading">title:
+														{{ g.title }}</div>
+													<div class="">Console:
+														{{ g.console }}</div>
+													<div class="">Publisher:
+														{{ g.publishers }}</div>
+													<div class="">Stock:
+														{{ g.stock }}</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+													<a href="{{path('removeGame', { 'id' : g.id })}}" role="button" class="btn btn-primary">Delete</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

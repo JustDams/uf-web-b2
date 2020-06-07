@@ -2,14 +2,23 @@
     height: 100vh;
 }
 
+.main-content-container {
+    padding: 0;
+    height: 100%;
+}
+
 .form-container div label {
     color: white;
 }
 
-.main-content-container {
-    padding: 0!important;
-}
-
 footer {
     display: none;
+}
+
+@media screen and (max-height: 729px) {
+    .form-container {
+        margin-top: 80px;
+        margin-bottom: calc(80px - 56px);
+        height: 100%;
+    }
 }

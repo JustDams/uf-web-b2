@@ -38,14 +38,14 @@ class Code
     private $purchaseDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Games::class, inversedBy="codes")
-     */
-    private $idGame;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="codes")
      */
     private $idUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Games::class, inversedBy="codes")
+     */
+    private $idGame;
 
     public function getId(): ?int
     {
@@ -100,18 +100,6 @@ class Code
         return $this;
     }
 
-    public function getIdGame(): ?Games
-    {
-        return $this->idGame;
-    }
-
-    public function setIdGame(?Games $idGame): self
-    {
-        $this->idGame = $idGame;
-
-        return $this;
-    }
-
     public function getIdUser(): ?Users
     {
         return $this->idUser;
@@ -120,6 +108,18 @@ class Code
     public function setIdUser(?Users $idUser): self
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdGame(): ?Games
+    {
+        return $this->idGame;
+    }
+
+    public function setIdGame(?Games $idGame): self
+    {
+        $this->idGame = $idGame;
 
         return $this;
     }

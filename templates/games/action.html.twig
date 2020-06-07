@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Create a game offer
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="{{asset('/css/form.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex justify-content-center form-container align-items-center" style="color: white;">
+		<div class="border shadow p-3 rounded navbar-bg">
+			{{form_start(createForm)}}
+			<div class="form-group">
+				{{ form_row(createForm.title, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Title'
+					}
+				})}}
+			</div>
+			<div class="form-group">
+				{{ form_row(createForm.publishers, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Publishers'
+					}
+				})}}
+			</div>
+			<div class="form-group">
+				{{ form_row(createForm.releaseYear, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Release year (ex: 2005)'
+					}
+				})}}
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					{{ form_row(createForm.review_score, {
+						'attr' : {
+							'class' : 'form-control',
+							'placeholder' : 'Review score'
+						}
+					})}}
+				</div>
+				<div class="form-group col-md-4">
+					{{ form_row(createForm.price, {
+						'attr' : {
+							'class' : 'form-control',
+							'placeholder' : 'Price'
+						}
+					})}}
+				</div>
+				<div class="form-group col-md-4">
+					{{ form_row(createForm.stock, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Stock'
+					}
+				})}}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					{{ form_row(createForm.genres, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Genres'
+					}
+				})}}
+				</div>
+				<div class="form-group col-md-6">
+					{{ form_row(createForm.console, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Console'
+					}
+				})}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{ form_row(createForm.description, {
+					'attr' : {
+						'class' : 'form-control',
+						'placeholder' : 'Description'
+					}
+				})}}
+			</div>
+			{{ form_row(createForm.create, {
+				'attr' : {
+					'class' : 'form-control',
+				},
+				'label' : id == null ? 'Create' : 'Update'
+			})}}
+			{{form_end(createForm)}}
+		</div>
+	</div>
+{% endblock %}

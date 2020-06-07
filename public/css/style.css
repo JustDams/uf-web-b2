@@ -2,6 +2,11 @@
     padding-top: 5em;
 }
 
+html,
+body {
+    background-image: linear-gradient(to right bottom, #f2f2f2, #f1f1f1, #eff0ef, #eeeeee, #ededed);
+}
+
 #notfound .notfound {
     position: absolute;
     left: 50%;

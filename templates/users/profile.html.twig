@@ -93,7 +93,9 @@
 						{% for g in games %}
 							<tr>
 								<td scope="row">
+								{% if g.idGame.id != null %}
 									<a href="{{path('game', {'id' : g.idGame.id })}}">{{g.idGame.title}}</a>
+								{% endif %}
 								</td>
 								<td>{{g.price}}$</td>
 								<td>{{g.code}}</td>
