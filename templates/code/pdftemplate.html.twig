@@ -15,7 +15,7 @@
 				<tr>
 					<th style="text-align: left;">Titre</th>
 					<th style="text-align: left;">Quantité</th>
-					<th style="text-align: left;">Prix</th>
+					<th style="text-align: center;">Prix</th>
 					<th style="text-align: left;">Prix Total</th>
 				</tr>
 			</thead>
@@ -27,22 +27,22 @@
 				{% for title, amount in countGames %}
 					<tr>
 						<td style="text-align: left;">{{ title }}</td>
-						<td style="text-align: left;">{{ amount }}</td>
+						<td style="text-align: center;">{{ amount }}</td>
 						<td style="text-align: left;">{{ priceGames[i] }}$</td>
-						<td style="text-align: left;">{{ priceGames[i] * amount }}$</td>
+						<td style="text-align: center;">{{ priceGames[i] * amount }}$</td>
 					</tr>
 					{% set totalPriceU = totalPriceU + priceGames[i] %}
 					{% set totalPrice = totalPrice + (priceGames[i] * amount) %}
 					{% set totalAmount = totalAmount + amount %}
 					{% set i = i + 1 %}
 				{% endfor %}
+				<tr style="margin-top: 2em;">
+					<td style="font-weight: bold;">Total</td>
+					<td style="text-align: center;">{{totalAmount}}</td>
+					<td style="text-align: left;">{{totalPriceU}}$</td>
+					<td style="text-align: center;">{{totalPrice}}$</td>
+				</tr>
 			</tbody>
-			<tr style="margin-top: 2em;">
-				<td style="font-weight: bold;">Total</td>
-				<td>{{totalAmount}}</td>
-				<td>{{totalPriceU}}$</td>
-				<td>{{totalPrice}}$</td>
-			</tr>
 		</table>
 	</body>
 </html>

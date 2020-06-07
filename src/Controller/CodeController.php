@@ -64,7 +64,7 @@ class CodeController extends AbstractController
 
         for ($i = 0; $i < count($allGames); $i++) {
             $str .= 'Your activation code for the game ' .
-                $allGames[$i]->getTitle() . ' is ' . $activationCodes[$i]->getCode() . '<br />';
+                $allGames[$i]->getTitle() . ' (console : '.$allGames[$i]->getConsole() .') is ' . $activationCodes[$i]->getCode() . '<br />';
         }
 
         $email = (new Email())
