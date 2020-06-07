@@ -11,6 +11,7 @@
 {% block body %}
 	<div class="container">
 		{% if games | length != 0 and research != null %}
+		<h1 class="my-4">Games research based on "{{ research }}"</h1>
 			{# Games #}
 			<div class="row">
 				{% for g in games %}
@@ -68,11 +69,12 @@
 
 			{% endif %}
 		</div>
-	{% endblock %}
-	{% block javascripts %}
-		<script src="{{asset('/js/scripts.js')}}"></script>
-		<script>
-			{% for g in games %}
-loadImage("{{ g.title }}","{{ g.id }}");{% endfor %}
-		</script>
-	{% endblock %}
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{asset('/js/scripts.js')}}"></script>
+	<script>
+		{% for g in games %}
+			loadImage("{{ g.title }}","{{ g.id }}");{% endfor %}
+	</script>
+{% endblock %}
