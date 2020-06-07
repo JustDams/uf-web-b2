@@ -43,37 +43,35 @@ class CodeController extends AbstractController
             'code' => $randomString
         ]);
 
-        if(count($code) > 0){
+        if (count($code) > 0) {
             $this->generateCode();
         } else {
             return $randomString;
         }
     }
 
-    public function sendEmail(Request $request, MailerInterface $mailer, $gamesFacture, $gamesTotal, $activationCodes, $gamesArray, $totalPrice)
+    public function sendEmail(Request $request, MailerInterface $mailer,$allGames, $priceGames, $countGames, $activationCodes)
     {
         $user = $this->getUser();
+        $str = "";
+        $html = $this->twig->render("code/pdftemplate.html.twig", [
+            'user' => $user,
+            'priceGames' => $priceGames,
+            'countGames' => $countGames
+        ]);
 
-        $str="";
-        $gamesFactureArray = [];
+        $pdf = $this->pdf->getOutputFromHtml($html);
 
-        for ($i = 0; $i < count($gamesFacture); $i++) {
-            $gamesFactureArray[$i] = $this->getDoctrine()->getRepository(Games::class)->find($gamesFacture[$i]->getId());
-        }
-
-        $html = $this->twig->render("code/pdftemplate.html.twig", ['user'=> $user, 'games' => $gamesFactureArray, 'totalPrice' => $totalPrice, 'gamesArray' => $gamesArray]);
-        $pdf=$this->pdf->getOutputFromHtml($html);
-
-        for ($i = 0; $i < count($gamesTotal); $i++) {
-            $game = $this->getDoctrine()->getRepository(Games::class)->find($gamesTotal[$i]->getId());
-            $str .= 'Your activation code for the game ' . $game->getTitle() . ' is ' . $activationCodes[$i]->getCode() .'\n';
+        for ($i = 0; $i < count($allGames); $i++) {
+            $str .= 'Your activation code for the game ' .
+                $allGames[$i]->getTitle() . ' is ' . $activationCodes[$i]->getCode() . '<br />';
         }
 
         $email = (new Email())
             ->from('noreply@de-weerd.name')
             ->to($user->getEmail())
             ->subject('Activation code of your games') //. $game->getTitle())
-            ->text($str)
+            ->html($str)
             ->attach($pdf, sprintf('document.pdf'));
         $mailer->send($email);
     }
@@ -190,7 +188,7 @@ class CodeController extends AbstractController
                 $game = $item->getIdGame();
                 $stock = $game->getStock();
                 $game->setStock($stock + 1);
-                
+
                 $manager->persist($game);
                 $manager->remove($item);
                 $manager->flush();
@@ -210,34 +208,33 @@ class CodeController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        $cartId = $this->getDoctrine()->getRepository(Cart::class)->findBy([
+        $cart = $this->getDoctrine()->getRepository(Cart::class)->findBy([
             'idUser' => $user->getId(),
         ]);
-        $gamesTotal = [];
-        $activationCodes = [];
-        $gamesFacture = [];
-        $gamesArray = [];
-        $totalPrice = 0;
-        $balance = $user->getBalance();
-        $c = 0;
-        $j = 0;
-        for ($i = 0; $i < count($cartId); $i++) {
-            $gamesTotal[$i] = $this->getDoctrine()->getRepository(Games::class)->find($cartId[$i]->getIdGame());
-            if ($i > 0 and $i < count($cartId) and (($cartId[$i]->getIdGame()->getId()) === ($cartId[$i-1]->getIdGame()->getId()))) {
-                $c++;
-            }
-            else {
-                $c++;
-                $gamesFacture[$j] = $this->getDoctrine()->getRepository(Games::class)->find($cartId[$i]->getIdGame());
-                $gamesArray[$j] = $c;
-                $totalPrice += ($gamesFacture[$j]->getPrice() * $c);
-                $j++;
-                $c = 1;
-
-            }
-
-
+        
+        $gamesId = [];
+        $priceGames = [];
+        $countGames = [];
+        $allGames = [];
+        
+        for ($i = 0; $i < count($cart); $i++) {
+            $gamesId[$i] = $cart[$i]->getIdGame()->getId();
+            $countGames[$i] = $cart[$i]->getIdGame()->getTitle();
+            $allGames[$i] = $cart[$i]->getIdGame();
         }
+
+        $gamesId = array_count_values($gamesId);
+        $countGames = array_count_values($countGames);
+        $totalPrice = 0;
+
+        foreach ($gamesId as $id => $amount) {
+            $game = $this->getDoctrine()->getRepository(Games::class)->find($id);
+            $totalPrice += $game->getPrice() * $amount;
+            array_push($priceGames, $game->getPrice());
+        }
+
+        $balance = $user->getBalance();
+        $activationCodes = [];
 
         if (($balance - $totalPrice) >= 0) {
             $user->setBalance($balance - $totalPrice);
@@ -245,7 +242,6 @@ class CodeController extends AbstractController
             for ($i = 0; $i < count($carts); $i++) {
                 $activationCode = $this->generateCode();
                 $game = $carts[$i]->getIdGame();
-
 
                 $code = new Code();
                 $code->setIdUser($user);
@@ -261,10 +257,10 @@ class CodeController extends AbstractController
                 $manager->remove($carts[$i]);
             }
             $manager->flush();
-            $this->sendEmail($request, $mailer, $gamesFacture, $gamesTotal, $activationCodes, $gamesArray, $totalPrice);
-
+            $this->sendEmail($request, $mailer,$allGames, $priceGames, $countGames ,$activationCodes);
+ 
             $manager->flush();
-            
+
             $this->addFlash('success', 'You\'ll receive the activation(s) code(s) on your email.');
             return $this->redirectToRoute('cart');
         } else {
