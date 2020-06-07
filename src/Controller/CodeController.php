@@ -219,7 +219,7 @@ class CodeController extends AbstractController
         $gamesArray = [];
         $totalPrice = 0;
         $balance = $user->getBalance();
-        $c = 1;
+        $c = 0;
         $j = 0;
         for ($i = 0; $i < count($cartId); $i++) {
             $gamesTotal[$i] = $this->getDoctrine()->getRepository(Games::class)->find($cartId[$i]->getIdGame());
@@ -227,6 +227,7 @@ class CodeController extends AbstractController
                 $c++;
             }
             else {
+                $c++;
                 $gamesFacture[$j] = $this->getDoctrine()->getRepository(Games::class)->find($cartId[$i]->getIdGame());
                 $gamesArray[$j] = $c;
                 $totalPrice += ($gamesFacture[$j]->getPrice() * $c);
