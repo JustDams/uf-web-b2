@@ -116,7 +116,7 @@
                                 }) }}
 								{{ form_widget(formUsers.submit , {
                                     'attr': {
-                                        'class' : 'btn btn-light my-2 my-sm-0',
+                                        'class' : 'btn btn-secondary my-2 my-sm-0',
                                         'label' : 'Search'
                                     }
                                 }) }}
@@ -278,6 +278,109 @@
 											</div>
 										</div>
 									</div>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h1 class="title my-4">All Orders</h1>
+			<div class="col-md-12">
+				<div class="main-card mb-3 card">
+					<div class="table-responsive">
+						<div class="form-inline my-2 my-lg-0 d-flex justify-content-between">
+							{{ form_start(formCode) }}
+							{{ form_widget(formCode.page , {
+                                'attr': {
+                                    'class' : 'form-control my-2 mx-2 mr-sm-2',
+                                    'placeholder' : 'Page...'
+                                }
+                            }) }}
+							{{ form_widget(formCode.submit , {
+                                'attr': {
+                                    'class' : 'btn btn-secondary my-2 my-sm-0',
+                                    'label' : 'Search'
+                                }
+                            }) }}
+							{{ form_end(formCode) }}
+						</div>
+						<table class="align-middle mb-0 table table-borderless table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="text-center" scope="col">Id</th>
+									<th scope="col">User id</th>
+									<th scope="col">Game id</th>
+									<th class="text-center" scope="col">Code</th>
+									<th class="text-center" scope="col">Price</th>
+									<th class="text-center" scope="col">Purchased date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for c in code %}
+									<tr>
+										<td class="text-center text-muted">{{ c.id }}</td>
+										<td class="widget-heading">
+											{% if  c.idUser == null %}
+												DELETED USER
+											{% else %}
+												<a href="{{path('editUser', {'id': c.idUser.id})}}" role="button" class="mx-2">
+													{{ c.idUser.firstname }}
+													{{ c.idUser.lastname }}
+												</a>
+											{% endif %}
+										</td>
+										<td class="widget-heading">
+											{% if  c.idGame == null %}
+												DELETED GAME
+											{% else %}
+												<a href="{{path('game', {'id': c.idGame.id})}}" role="button" class="mx-2">
+													{{ c.idGame.title }}
+													<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modalGame{{c.idGame.id}}">
+														<i class="fas fa-trash"></i>
+													</a>
+													<a href="{{path('actionGame', { 'id' : c.idGame.id })}}">
+														<i class="fas fa-pencil-alt"></i>
+													</a>
+												</a>
+											{% endif %}
+										</td>
+										<td class="text-center">{{ c.code }}</td>
+										<td class="text-center">
+											<span class="badge badge-warning">{{ c.price }}$</span>
+										</td>
+										<td class="text-center">{{ c.purchaseDate|date('d/m/Y')}}</td>
+									</tr>
+									{% if  c.idGame != null %}
+										<div class="modal fade" id="modalGame{{c.idGame.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="mb-2">You are going to delete the game:</div>
+														<div class="widget-heading">title:
+															{{ c.idGame.title }}</div>
+														<div class="">Console:
+															{{ c.idGame.console }}</div>
+														<div class="">Publisher:
+															{{ c.idGame.publishers }}</div>
+														<div class="">Stock:
+															{{ c.idGame.stock }}</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+														<a href="{{path('removeGame', { 'id' : c.idGame.id })}}" role="button" class="btn btn-primary">Delete</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endif %}
 								{% endfor %}
 							</tbody>
 						</table>

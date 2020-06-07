@@ -41,6 +41,15 @@ class CodeRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    public function search10LastOrder()
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy("o.purchaseDate", "desc")
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Code[] Returns an array of Code objects
     //  */

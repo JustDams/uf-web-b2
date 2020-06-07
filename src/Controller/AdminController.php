@@ -16,6 +16,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    public function findOrders($page)
+    {
+        $first = 1;
+        $second = 10;
+
+        if ($page > 1) {
+            $first += (10 * ($page - 1));
+            $second += (10 * ($page - 1));
+        }
+
+        $games = $this->getDoctrine()->getRepository(Code::class)->findAll();
+        $showOrders = [];
+
+        if ( count($games) >= $second) {
+            for ($i = $first; $i <= $second; $i++) {
+                $showOrders[$i] = $games[$i];
+            }
+        } else {
+            $this->addFlash('errors','There is nothing on this page.');
+        }
+
+        return $showOrders;
+    }
 
     /**
      * @Route("/admin", name="admin")
@@ -80,20 +103,25 @@ class AdminController extends AbstractController
         $order = count($allOrders);
         $order7 = count($LastWeekOrders);
 
-        $form = $this->createForm(SearchFormType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData()->getTitle();
-            return $this->redirectToRoute('search', ['game' => $data]);
-        }
-
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($request);
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $data = $searchForm->getData()->getTitle();
             return $this->redirectToRoute('search', ['game' => $data]);
+        }
+
+        $code = $this->getDoctrine()->getRepository(Code::class)->search10LastOrder();
+
+        $formCode = $this->createFormBuilder()
+            ->add('page', TextType::class)
+            ->add('submit', SubmitType::class)
+            ->getForm();
+        $formCode->handleRequest($request);
+
+        if ($formCode->isSubmitted() && $formCode->isValid()) {
+            $page = $formCode->get('page')->getData();
+            $code = $this->findOrders($page);
         }
 
         if ($user != null) {
@@ -109,6 +137,8 @@ class AdminController extends AbstractController
                     'user' => $user,
                     'role' => $role,
                     'users' => $users,
+                    'code' => $code,
+                    'formCode' => $formCode->createView(),
                     'searchform' => $searchForm->createView(),
                     'formGames' => $formGames->createView(),
                     'formUsers' => $formUsers->createView()
