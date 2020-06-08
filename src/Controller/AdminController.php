@@ -49,6 +49,7 @@ class AdminController extends AbstractController
         $user = $this->getUser();
 
         $allUsers = $this->getDoctrine()->getRepository(Users::class)->findAll();
+        $users = $allUsers;
 
         $games = $this->getDoctrine()
             ->getRepository(Games::class)
