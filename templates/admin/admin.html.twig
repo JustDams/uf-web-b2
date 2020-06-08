@@ -168,10 +168,10 @@
 											<td class="text-center">{{ u.registerdate | date('m/d/Y') }}</td>
 											<td class="text-center">
 												<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modal{{u.id}}">
-													<i class="fas fa-trash"></i>
+													<i class="fas fa-trash" style="color:red"></i>
 												</a>
 												<a href="{{ path('editUser', {'id' : u.id}) }}">
-													<i class="fas fa-pencil-alt"></i>
+													<i class="fas fa-pencil-alt" style="color:black"></i>
 												</a>
 											</td>
 										</tr>
@@ -260,10 +260,10 @@
 										<td class="text-center">{{ g.stock }}</td>
 										<td class="text-center">
 											<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modalGame{{g.id}}">
-												<i class="fas fa-trash"></i>
+												<i class="fas fa-trash" style="color:red"></i>
 											</a>
 											<a href="{{path('actionGame', { 'id' : g.id })}}">
-												<i class="fas fa-pencil-alt"></i>
+												<i class="fas fa-pencil-alt" style="color:black"></i>
 											</a>
 										</td>
 									</tr>
@@ -354,10 +354,10 @@
 												<a href="{{path('game', {'id': c.idGame.id})}}" role="button" class="mx-2">
 													{{ c.idGame.title }}
 													<a href="#" role="button" class="mx-2" data-toggle="modal" data-target="#modalGame{{c.idGame.id}}">
-														<i class="fas fa-trash"></i>
+														<i class="fas fa-trash" style="color:red"></i>
 													</a>
 													<a href="{{path('actionGame', { 'id' : c.idGame.id })}}">
-														<i class="fas fa-pencil-alt"></i>
+														<i class="fas fa-pencil-alt" style="color:black"></i>
 													</a>
 												</a>
 											{% endif %}
