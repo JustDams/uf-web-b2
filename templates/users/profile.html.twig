@@ -93,8 +93,10 @@
 						{% for g in games %}
 							<tr>
 								<td scope="row">
-								{% if g.idGame.id != null %}
+								{% if g.idGame != null %}
 									<a href="{{path('game', {'id' : g.idGame.id })}}">{{g.idGame.title}}</a>
+								{% else %}
+									DELETED GAME
 								{% endif %}
 								</td>
 								<td>{{g.price}}$</td>
